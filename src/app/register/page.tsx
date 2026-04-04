@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import LoginForm from "./login-form";
+import RegisterForm from "./register-form";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -16,13 +16,13 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-xl font-semibold text-white mb-1">Sign in</h2>
+          <h2 className="text-xl font-semibold text-white mb-1">Create account</h2>
           <p className="text-slate-400 text-sm mb-8">
-            Enter your credentials to continue
+            Sign up to get started
           </p>
 
           <Suspense fallback={null}>
-            <LoginForm />
+            <RegisterForm />
           </Suspense>
         </div>
       </div>
