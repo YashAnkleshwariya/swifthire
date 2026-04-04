@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
 import { requireUser } from "@/lib/auth";
-import { addCredits, PRICING } from "@/lib/billing/credits";
+import { PRICING } from "@/lib/billing/credits";
 import { handleApiError } from "@/lib/errors";
 
-const dodo = new DodoPayments({
-  bearerToken: process.env.DODO_API_KEY!,
-  environment: process.env.NODE_ENV === "production" ? "live_mode" : "test_mode",
-});
+function getDodoClient() {
+  return new DodoPayments({
+    bearerToken: process.env.DODO_API_KEY!,
+    environment: process.env.NODE_ENV === "production" ? "live_mode" : "test_mode",
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,6 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Plan not available" }, { status: 400 });
     }
 
+    const dodo = getDodoClient();
     const payment = await dodo.payments.create({
       billing: {
         city: ".",
@@ -36,12 +39,11 @@ export async function POST(req: NextRequest) {
         street: ".",
         zipcode: "00000",
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       customer: {
         email: user.email,
         name: user.name ?? user.email,
         create_new_customer: false,
-      } as any,
+      } as unknown as Parameters<typeof dodo.payments.create>[0]["customer"],
       product_cart: [{ product_id: plan.dodoProductId, quantity: 1 }],
       metadata: { userId: user.id, planId },
       return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,

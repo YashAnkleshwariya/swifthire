@@ -6,14 +6,16 @@ import prisma from "@/lib/prisma";
  * @param amount - The amount of credits to refund
  * @param jobId - The ID of the job being cancelled
  */
-export async function refundCredits(userId: string, amount: number, jobId: string): Promise<void> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function refundCredits(userId: string, amount: number, _jobId: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },
     data: { credits: { increment: amount } },
   });
 }
 
-export async function addCredits(userId: string, amount: number, reason: string): Promise<void> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function addCredits(userId: string, amount: number, _reason: string): Promise<void> {
   await prisma.user.update({
     where: { id: userId },
     data: { credits: { increment: amount } },

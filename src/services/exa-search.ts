@@ -1,4 +1,4 @@
-import { exa } from "@/lib/exa";
+import { getExaClient } from "@/lib/exa";
 
 export interface ExaCandidate {
   name: string;
@@ -17,6 +17,7 @@ export async function searchLinkedInProfiles(
   // Request extra results to compensate for non-profile URLs filtered out below
   const fetchCount = Math.min(limit * 3, 100);
 
+  const exa = getExaClient();
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore - category and highlights parameters are valid but not in exa-js types yet
   const results = await exa.searchAndContents(query, {
