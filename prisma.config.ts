@@ -4,4 +4,10 @@ import { defineConfig } from "prisma/config";
 // DIRECT_URL: Supabase direct connection (port 5432) — used only by prisma migrate
 export default defineConfig({
   schema: "prisma/schema.prisma",
+  migrate: {
+    async adapter(env) {
+      const { PrismaPg } = await import("@prisma/adapter-pg");
+      return new PrismaPg({ connectionString: env.DIRECT_URL });
+    },
+  },
 });
