@@ -56,17 +56,6 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    if (error && typeof error === "object" && "issues" in error) {
-      const zodError = error as { issues: { message: string }[] };
-      return NextResponse.json(
-        {
-          success: false,
-          error: zodError.issues[0]?.message ?? "Validation failed",
-          code: "VALIDATION_ERROR",
-        },
-        { status: 400 }
-      );
-    }
     return handleApiError(error);
   }
 }
