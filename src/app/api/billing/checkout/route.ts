@@ -36,11 +36,12 @@ export async function POST(req: NextRequest) {
         street: ".",
         zipcode: "00000",
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       customer: {
         email: user.email,
         name: user.name ?? user.email,
         create_new_customer: false,
-      },
+      } as any,
       product_cart: [{ product_id: plan.dodoProductId, quantity: 1 }],
       metadata: { userId: user.id, planId },
       return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing?success=true`,
