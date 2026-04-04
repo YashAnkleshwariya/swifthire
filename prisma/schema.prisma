@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ProcessingStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id        String   @id  // Supabase Auth UUID — set by Auth, not @default
+  email     String   @unique  // cached from Supabase Auth for app queries
+  name      String?
+  isAdmin   Boolean  @default(false)
+  credits   Int      @default(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobs               Job[]
+  creditTransactions CreditTransaction[]
+}
+
+model Job {
+  id                   String    @id @default(cuid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id])
+  title                String
+  description          String    @db.Text
+  location             String?
+  experienceLevel      String?
+  candidateLimit       Int       @default(10)
+  status               JobStatus @default(PENDING)
+  searchQuery          String?   @db.Text
+  totalCandidatesFound Int       @default(0)
+  creditsUsed          Int       @default(1)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  candidates    Candidate[]
+  processingJob ProcessingJob?
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Candidate {
+  id           String      @id @default(cuid())
+  jobId        String
+  job          Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  name         String
+  linkedinUrl  String
+  profileText  String?     @db.Text
+  profileTitle String?
+  location     String?
+  workHistory  Json?
+  exaScore     Float?
+  rank         Int?
+  createdAt    DateTime    @default(now())
+  evaluation   Evaluation?
+
+  @@index([jobId])
+}
+
+model Evaluation {
+  id          String    @id @default(cuid())
+  candidateId String    @unique
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  matchScore  Float
+  matchBand   String
+  whyMatched  Json?
+  evaluatedAt DateTime  @default(now())
+}
+
+model ProcessingJob {
+  id          String           @id @default(cuid())
+  jobId       String           @unique
+  job         Job              @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  status      ProcessingStatus @default(QUEUED)
+  currentStep String?
+  progress    Int              @default(0)
+  error       String?          @db.Text
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model CreditTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  type      String   // "PURCHASE" | "DEDUCT" | "REFUND"
+  jobId     String?
+  source    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
