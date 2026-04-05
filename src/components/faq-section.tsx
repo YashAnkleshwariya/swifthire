@@ -62,9 +62,9 @@ export function FaqSection() {
           <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">know</span>
         </h2>
         <p className="text-gray-400 text-lg max-w-xl mx-auto">
-          Got questions about ShiftHire? We have got answers. If something is missing, reach us at{" "}
-          <a href="mailto:hello@shifthire.io" className="text-blue-400 hover:underline">
-            hello@shifthire.io
+          Got questions about ShiftHire? We have got answers. If something is missing,{" "}
+          <a href="mailto:ankleshwariyayash@gmail.com" className="text-blue-400 hover:underline">
+            write us
           </a>
         </p>
       </div>

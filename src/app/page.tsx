@@ -387,41 +387,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
-      <section className="max-w-7xl mx-auto px-5 py-24">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400 text-xs font-semibold mb-5">
-            What recruiters say
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Real results from real teams</h2>
-          <p className="text-gray-400 max-w-lg mx-auto">Hiring teams worldwide are cutting sourcing time and improving candidate quality with ShiftHire.</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t) => (
-            <div key={t.author} className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex flex-col gap-5">
-              <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-300 text-sm leading-relaxed flex-1">&ldquo;{t.quote}&rdquo;</p>
-              <div className="flex items-center gap-3 pt-2 border-t border-white/[0.06]">
-                <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center flex-shrink-0 shadow-lg`}>
-                  <span className="text-white text-xs font-black">{t.avatar}</span>
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm">{t.author}</p>
-                  <p className="text-gray-500 text-xs">{t.role} · {t.company}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── Pricing ── */}
       <section className="border-y border-white/[0.05] bg-white/[0.015] py-24">
         <div className="max-w-5xl mx-auto px-5">
@@ -541,7 +506,7 @@ export default function HomePage() {
             <ul className="space-y-2 text-sm text-gray-500">
               <li><a href="#about" className="hover:text-gray-300 transition-colors">About</a></li>
               <li><a href="#faq" className="hover:text-gray-300 transition-colors">FAQ</a></li>
-              <li><a href="mailto:hello@shifthire.io" className="hover:text-gray-300 transition-colors">Contact</a></li>
+              <li><a href="mailto:ankleshwariyayash@gmail.com" className="hover:text-gray-300 transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
