@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaqSection } from "@/components/faq-section";
+import { ShiftHireLogo } from "@/components/shifthire-logo";
 
 const emeaClients = [
   { name: "Deutsche Telekom", country: "Germany", sector: "Telecommunications", initials: "DT" },
@@ -127,12 +128,7 @@ export default function HomePage() {
       {/* ── Navbar ── */}
       <nav className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#080b14]/80 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <span className="text-xs font-black text-white tracking-tight">SH</span>
-            </div>
-            <span className="font-bold text-white text-lg tracking-tight">ShiftHire</span>
-          </div>
+          <ShiftHireLogo size="sm" />
           <div className="hidden md:flex items-center gap-6 text-sm text-gray-400">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-white transition-colors">How it works</a>
@@ -408,9 +404,6 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/25 bg-blue-500/8 text-blue-400 text-xs font-semibold mb-6">
                 Major EMEA Clients
               </div>
-              <h3 className="text-2xl font-bold text-white mb-7">
-                Trusted by industry leaders across the region
-              </h3>
               <div className="grid gap-3">
                 {emeaClients.map((c) => (
                   <div key={c.name} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-blue-500/20 hover:bg-blue-500/[0.03] transition-all group">
@@ -573,11 +566,8 @@ export default function HomePage() {
       <footer className="border-t border-white/[0.05] bg-[#050709]">
         <div className="max-w-7xl mx-auto px-5 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <span className="text-xs font-black text-white">SH</span>
-              </div>
-              <span className="font-bold text-white">ShiftHire</span>
+            <div className="mb-4">
+              <ShiftHireLogo size="xs" />
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">AI-powered recruitment for EMEA enterprises. Sourcing candidates in minutes, not days.</p>
           </div>

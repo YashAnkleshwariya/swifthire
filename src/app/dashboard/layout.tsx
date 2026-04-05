@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { ShiftHireLogo } from "@/components/shifthire-logo";
 
 interface UserData {
   name: string | null;
@@ -48,12 +49,7 @@ export default function DashboardLayout({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-xs font-bold text-white">SH</span>
-            </div>
-            <span className="font-semibold text-white text-sm">ShiftHire</span>
-          </div>
+          <ShiftHireLogo size="xs" />
         </div>
 
         {children}
