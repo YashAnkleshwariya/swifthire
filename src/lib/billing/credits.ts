@@ -1,25 +1,17 @@
-import prisma from "@/lib/prisma";
+import { getAdminClient } from "@/lib/supabase/admin";
 
-/**
- * Refund credits to a user for a cancelled job
- * @param userId - The ID of the user
- * @param amount - The amount of credits to refund
- * @param jobId - The ID of the job being cancelled
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function refundCredits(userId: string, amount: number, _jobId: string): Promise<void> {
-  await prisma.user.update({
-    where: { id: userId },
-    data: { credits: { increment: amount } },
-  });
+  const admin = getAdminClient();
+  const { data } = await admin.from("User").select("credits").eq("id", userId).single();
+  const current = (data as { credits: number } | null)?.credits ?? 0;
+  await admin.from("User").update({ credits: current + amount, updatedAt: new Date().toISOString() }).eq("id", userId);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function addCredits(userId: string, amount: number, _reason: string): Promise<void> {
-  await prisma.user.update({
-    where: { id: userId },
-    data: { credits: { increment: amount } },
-  });
+  const admin = getAdminClient();
+  const { data } = await admin.from("User").select("credits").eq("id", userId).single();
+  const current = (data as { credits: number } | null)?.credits ?? 0;
+  await admin.from("User").update({ credits: current + amount, updatedAt: new Date().toISOString() }).eq("id", userId);
 }
 
 export const PRICING = {

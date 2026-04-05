@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { inngest } from "@/inngest/client";
 import { createJobSchema } from "@/lib/validations/job";
 import { handleApiError, InsufficientCreditsError } from "@/lib/errors";
-
 const CREDIT_COST = 10;
 
 export async function POST(req: NextRequest) {
@@ -18,55 +17,57 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validated = createJobSchema.parse(body);
 
-    const title =
-      validated.description
-        .split("\n")
-        .map((l) => l.trim())
-        .find((l) => l.length > 3)
-        ?.substring(0, 200) ?? "Job Match";
+    const title = validated.description
+      .split("\n").map((l) => l.trim()).find((l) => l.length > 3)
+      ?.substring(0, 200) ?? "Job Match";
 
-    const { job, newCredits } = await prisma.$transaction(async (tx) => {
-      const newJob = await tx.job.create({
-        data: {
-          userId: user.id,
-          title,
-          description: validated.description,
-          location: validated.location,
-          experienceLevel: validated.experienceLevel,
-          candidateLimit: validated.candidateLimit,
-          status: "PENDING",
-          creditsUsed: CREDIT_COST,
-        },
-      });
+    const admin = getAdminClient();
+    const jobId = crypto.randomUUID();
+    const now = new Date().toISOString();
 
-      await tx.processingJob.create({
-        data: { jobId: newJob.id, status: "QUEUED", currentStep: "WAITING" },
-      });
+    const { error: jobError } = await admin.from("Job").insert({
+      id: jobId,
+      userId: user.id,
+      title,
+      description: validated.description,
+      location: validated.location ?? null,
+      experienceLevel: validated.experienceLevel ?? null,
+      candidateLimit: validated.candidateLimit,
+      status: "PENDING",
+      creditsUsed: CREDIT_COST,
+      totalCandidatesFound: 0,
+      createdAt: now,
+      updatedAt: now,
+    });
+    if (jobError) throw new Error(jobError.message);
 
-      const updatedUser = await tx.user.update({
-        where: { id: user.id },
-        data: { credits: { decrement: CREDIT_COST } },
-        select: { credits: true },
-      });
-
-      await tx.creditTransaction.create({
-        data: {
-          userId: user.id,
-          amount: -CREDIT_COST,
-          type: "DEDUCT",
-          jobId: newJob.id,
-          source: "job_creation",
-        },
-      });
-
-      return { job: newJob, newCredits: updatedUser.credits };
+    await admin.from("ProcessingJob").insert({
+      id: crypto.randomUUID(),
+      jobId,
+      status: "QUEUED",
+      currentStep: "WAITING",
+      progress: 0,
+      createdAt: now,
+      updatedAt: now,
     });
 
-    // Trigger Inngest function (replaces BullMQ queue.add)
-    await inngest.send({ name: "job/process", data: { jobId: job.id } });
+    const newCredits = user.credits - CREDIT_COST;
+    await admin.from("User").update({ credits: newCredits, updatedAt: now }).eq("id", user.id);
+
+    await admin.from("CreditTransaction").insert({
+      id: crypto.randomUUID(),
+      userId: user.id,
+      amount: -CREDIT_COST,
+      type: "DEDUCT",
+      jobId,
+      source: "job_creation",
+      createdAt: now,
+    });
+
+    await inngest.send({ name: "job/process", data: { jobId } });
 
     return NextResponse.json(
-      { success: true, jobId: job.id, status: "QUEUED", creditsRemaining: newCredits },
+      { success: true, jobId, status: "QUEUED", creditsRemaining: newCredits },
       { status: 201 }
     );
   } catch (error) {

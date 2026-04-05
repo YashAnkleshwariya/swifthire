@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { handleApiError, NotFoundError, AuthorizationError } from "@/lib/errors";
 
 export async function GET(
@@ -9,33 +9,27 @@ export async function GET(
 ) {
   try {
     const user = await requireUser();
+    const admin = getAdminClient();
 
-    const processingJob = await prisma.processingJob.findUnique({
-      where: { jobId: params.jobId },
-      select: {
-        status: true,
-        currentStep: true,
-        progress: true,
-        error: true,
-        startedAt: true,
-        completedAt: true,
-        job: { select: { userId: true } },
-      },
-    });
+    const { data, error } = await admin
+      .from("ProcessingJob")
+      .select("status, currentStep, progress, error, startedAt, completedAt, job:Job(userId)")
+      .eq("jobId", params.jobId)
+      .single();
 
-    if (!processingJob) throw new NotFoundError("Processing job not found");
+    if (error || !data) throw new NotFoundError("Processing job not found");
 
-    if (processingJob.job.userId !== user.id && !user.isAdmin) {
-      throw new AuthorizationError("Access denied");
-    }
+    const jobArr = data.job as { userId: string }[] | null;
+    const jobRecord = Array.isArray(jobArr) ? jobArr[0] : null;
+    if (jobRecord?.userId !== user.id && !user.isAdmin) throw new AuthorizationError("Access denied");
 
     return NextResponse.json({
-      status: processingJob.status,
-      currentStep: processingJob.currentStep,
-      progress: processingJob.progress,
-      error: processingJob.error,
-      startedAt: processingJob.startedAt,
-      completedAt: processingJob.completedAt,
+      status: data.status,
+      currentStep: data.currentStep,
+      progress: data.progress,
+      error: data.error,
+      startedAt: data.startedAt,
+      completedAt: data.completedAt,
     });
   } catch (error) {
     return handleApiError(error);
