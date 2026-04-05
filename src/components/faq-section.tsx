@@ -5,7 +5,7 @@ import { useState } from "react";
 const faqs = [
   {
     q: "What exactly does ShiftHire do?",
-    a: "ShiftHire is an AI-powered recruitment platform that automates candidate sourcing from LinkedIn. You paste a job description, and within minutes our AI — powered by Google Gemini and Exa.ai — searches millions of LinkedIn profiles, evaluates each candidate against your requirements, and delivers a ranked shortlist with match scores and detailed reasoning. No LinkedIn Premium required.",
+    a: "ShiftHire is an AI-powered recruitment platform that automates candidate sourcing from LinkedIn. You paste a job description, and within minutes our AI searches millions of LinkedIn profiles, evaluates each candidate against your requirements, and delivers a ranked shortlist with match scores and detailed reasoning. No LinkedIn Premium required.",
   },
   {
     q: "How is ShiftHire different from LinkedIn Recruiter?",

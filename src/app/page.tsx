@@ -22,7 +22,7 @@ const features = [
       </svg>
     ),
     title: "LinkedIn Deep Search",
-    description: "Exa.ai's semantic search engine scans millions of live LinkedIn profiles. We surface candidates who fit your role — not just people who put the right keywords in their headline.",
+    description: "Our proprietary search engine scans millions of live LinkedIn profiles using semantic matching. We surface candidates who fit your role — not just people who put the right keywords in their headline.",
   },
   {
     gradient: "from-pink-500 to-rose-500",
@@ -102,7 +102,7 @@ const steps = [
   {
     num: "02",
     title: "AI builds and runs your search",
-    desc: "Gemini AI analyses your description and generates an optimised search strategy. Exa.ai's semantic engine then searches millions of live LinkedIn profiles — no manual querying needed.",
+    desc: "ShiftHire analyses your description and generates an optimised search strategy. Our search engine scans millions of live LinkedIn profiles in real time — no manual querying needed.",
   },
   {
     num: "03",
@@ -356,7 +356,7 @@ export default function HomePage() {
               Privacy and compliance are baked into every part of the platform. We do not store candidate data beyond your session, we do not sell data to third parties, and our analytics provider (Umami) is fully anonymous.
             </p>
             <p>
-              ShiftHire integrates Google Gemini for semantic understanding, Exa.ai for real-time LinkedIn search, and a custom evaluation pipeline that explains every ranking decision. There is no black box. You see the score, the band, and the reasoning for every single candidate.
+              ShiftHire combines advanced AI for semantic understanding with real-time LinkedIn search, and a custom evaluation pipeline that explains every ranking decision. There is no black box. You see the score, the band, and the reasoning for every single candidate.
             </p>
             <p>
               We are growing fast because the product works — and we are committed to keeping it that way. Thousands of job searches run through ShiftHire every month, from early-stage startups to enterprise talent teams around the world.
