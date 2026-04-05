@@ -19,7 +19,12 @@ export async function POST(req: NextRequest) {
     });
 
     if (error || !data.user) {
-      throw new AuthenticationError("Invalid email or password");
+      const msg = error?.message ?? "Invalid email or password";
+      throw new AuthenticationError(
+        msg.toLowerCase().includes("email not confirmed")
+          ? "Please confirm your email address before signing in, or contact support."
+          : "Invalid email or password"
+      );
     }
 
     return NextResponse.json({
