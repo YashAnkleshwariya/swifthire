@@ -5,11 +5,15 @@ import { searchLinkedInProfiles } from "@/services/exa-search";
 import { evaluateCandidate } from "@/services/candidate-evaluator";
 
 export const processJob = inngest.createFunction(
-  { id: "process-job", retries: 3 },
-  { event: "job/process" },
+  {
+    id: "process-job",
+    retries: 3,
+    triggers: [{ event: "job/process" }],
+  },
   async ({ event, step }) => {
-    const jobId = (event.data as { jobId: string }).jobId;
-    if (!jobId) throw new Error(`Missing jobId in event data: ${JSON.stringify(event.data)}`);
+    const data = event.data as Record<string, unknown>;
+    const jobId = (data?.jobId ?? data?.data?.jobId) as string | undefined;
+    if (!jobId) throw new Error(`Missing jobId. Received event.data: ${JSON.stringify(data)}`);
 
     // Step 1: Mark job as processing and fetch it
     const job = await step.run("fetch-and-start", async () => {
