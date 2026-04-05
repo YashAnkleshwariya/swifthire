@@ -15,11 +15,15 @@ const registerSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  console.log("STEP1: register route started");
   try {
     const body = await req.json();
+    console.log("STEP2: body parsed");
     const validated = registerSchema.parse(body);
+    console.log("STEP3: schema validated");
 
     const supabase = await createClient();
+    console.log("STEP4: supabase client created");
 
     // Create Supabase Auth user
     const { data, error } = await supabase.auth.signUp({
@@ -30,15 +34,17 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log("STEP5: signUp result", { userId: data?.user?.id, error: error?.message });
+
     if (error || !data.user) {
       throw new ValidationError(error?.message ?? "Registration failed");
     }
 
-    // Use Supabase admin client (HTTPS/PostgREST) instead of Prisma TCP connection
     const admin = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
+    console.log("STEP6: admin client created");
 
     const { error: dbError } = await admin.from("User").insert({
       id: data.user.id,
@@ -50,9 +56,10 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     });
 
+    console.log("STEP7: insert result", { dbError: dbError?.message, code: dbError?.code });
+
     if (dbError) {
-      console.error("Supabase insert error:", dbError);
-      throw new ValidationError(`Database error: ${dbError.message}`);
+      throw new ValidationError(`DB_INSERT_FAILED: ${dbError.message} (code: ${dbError.code})`);
     }
 
     return NextResponse.json(
