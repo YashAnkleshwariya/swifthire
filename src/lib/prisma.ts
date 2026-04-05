@@ -6,10 +6,9 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  // DATABASE_URL must be the Supabase pooled connection string (port 6543)
-  // DIRECT_URL (port 5432) is used only by prisma migrate — set in prisma.config.ts
   const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
+    ssl: { rejectUnauthorized: false },
   });
   return new PrismaClient({ adapter });
 }
