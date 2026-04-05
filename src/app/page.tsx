@@ -2,16 +2,6 @@ import Link from "next/link";
 import { FaqSection } from "@/components/faq-section";
 import { ShiftHireLogo } from "@/components/shifthire-logo";
 
-const emeaClients = [
-  { name: "Deutsche Telekom", country: "Germany", sector: "Telecommunications", initials: "DT" },
-  { name: "Société Générale", country: "France", sector: "Financial Services", initials: "SG" },
-  { name: "Siemens AG", country: "Germany", sector: "Industrial Technology", initials: "SI" },
-  { name: "Vodafone Group", country: "UK", sector: "Telecommunications", initials: "VF" },
-  { name: "ING Group", country: "Netherlands", sector: "Banking", initials: "ING" },
-  { name: "Maersk", country: "Denmark", sector: "Logistics & Shipping", initials: "MAE" },
-  { name: "SAP SE", country: "Germany", sector: "Enterprise Software", initials: "SAP" },
-  { name: "Standard Bank", country: "South Africa", sector: "Banking", initials: "SB" },
-];
 
 const features = [
   {
@@ -62,7 +52,7 @@ const features = [
       </svg>
     ),
     title: "GDPR by Design",
-    description: "Built specifically for EMEA markets. EU data residency, no candidate data stored beyond your session, no third-party data sharing, anonymous analytics only.",
+    description: "Privacy-first by design. No candidate data stored beyond your session, no third-party data sharing, anonymous analytics only. GDPR compliant globally.",
   },
   {
     gradient: "from-indigo-500 to-blue-600",
@@ -157,7 +147,7 @@ export default function HomePage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/25 bg-blue-500/8 text-blue-400 text-xs font-semibold mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            Trusted by enterprise hiring teams across EMEA
+            Trusted by enterprise hiring teams worldwide
           </div>
 
           <h1 className="text-[clamp(2.5rem,7vw,5rem)] font-black tracking-tight leading-[1.05] mb-6">
@@ -346,87 +336,53 @@ export default function HomePage() {
 
       {/* ── About ── */}
       <section className="border-y border-white/[0.05] bg-white/[0.015] py-24" id="about">
-        <div className="max-w-7xl mx-auto px-5">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* About text */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/25 bg-purple-500/8 text-purple-400 text-xs font-semibold mb-6">
-                About ShiftHire
-              </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-7 leading-tight">
-                Recruitment AI built for{" "}
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">EMEA</span>
-              </h2>
+        <div className="max-w-4xl mx-auto px-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/25 bg-purple-500/8 text-purple-400 text-xs font-semibold mb-6">
+            About ShiftHire
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-7 leading-tight">
+            Recruitment AI built for{" "}
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">every hiring team</span>
+          </h2>
 
-              <div className="space-y-5 text-gray-400 leading-relaxed">
-                <p>
-                  ShiftHire was built by a team of ex-recruiters and engineers who spent years watching talented people waste their best hours on manual LinkedIn searches. We built the platform we always wished existed — one that does the sourcing work for you, without sacrificing quality or transparency.
-                </p>
-                <p>
-                  Our platform is purpose-engineered for EMEA hiring. That means multi-market and multilingual job description support, strict GDPR compliance with EU data residency, and a deep understanding of the talent landscape across Germany, UK, France, Netherlands, UAE, South Africa, and beyond.
-                </p>
-                <p>
-                  We are not a US tool bolted onto European compliance requirements after the fact. GDPR, EU AI Act alignment, and privacy-by-design are baked into every part of the platform — from how we store candidate data (we don&apos;t, beyond your session) to our choice of analytics provider (Umami — fully anonymous, no personal data).
-                </p>
-                <p>
-                  ShiftHire integrates Google Gemini for semantic understanding, Exa.ai for real-time LinkedIn search, and a custom evaluation pipeline that explains every ranking decision. There is no black box. You see the score, the band, and the reasoning for every single candidate.
-                </p>
-                <p>
-                  Today, ShiftHire powers thousands of job searches per month across EMEA — from fast-growing startups in Amsterdam and Berlin to enterprise talent teams in Dubai and Johannesburg. We are growing fast because the product works, and we are committed to keeping it that way.
-                </p>
-              </div>
+          <div className="space-y-5 text-gray-400 leading-relaxed mb-10">
+            <p>
+              ShiftHire was built by a team of ex-recruiters and engineers who spent years watching talented people waste their best hours on manual LinkedIn searches. We built the platform we always wished existed — one that does the sourcing work for you, without sacrificing quality or transparency.
+            </p>
+            <p>
+              Our platform works for any team, any industry, and any location worldwide. Whether you are hiring software engineers in San Francisco, financial analysts in London, or operations managers in Singapore — ShiftHire finds the right people in minutes, not days.
+            </p>
+            <p>
+              Privacy and compliance are baked into every part of the platform. We do not store candidate data beyond your session, we do not sell data to third parties, and our analytics provider (Umami) is fully anonymous.
+            </p>
+            <p>
+              ShiftHire integrates Google Gemini for semantic understanding, Exa.ai for real-time LinkedIn search, and a custom evaluation pipeline that explains every ranking decision. There is no black box. You see the score, the band, and the reasoning for every single candidate.
+            </p>
+            <p>
+              We are growing fast because the product works — and we are committed to keeping it that way. Thousands of job searches run through ShiftHire every month, from early-stage startups to enterprise talent teams around the world.
+            </p>
+          </div>
 
-              <div className="flex flex-wrap gap-2.5 mt-8">
-                {[
-                  { label: "GDPR Compliant", color: "emerald" },
-                  { label: "ISO 27001 Ready", color: "blue" },
-                  { label: "EU Data Residency", color: "violet" },
-                  { label: "SOC 2 Type II", color: "amber" },
-                  { label: "EU AI Act Aligned", color: "cyan" },
-                ].map((b) => (
-                  <span
-                    key={b.label}
-                    className="px-3 py-1.5 rounded-lg border text-xs font-semibold"
-                    style={{
-                      borderColor: `var(--${b.color}-500, #10b981)25`,
-                      backgroundColor: `var(--${b.color}-500, #10b981)10`,
-                      color: `var(--${b.color}-400, #34d399)`,
-                    }}
-                  >
-                    {b.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* EMEA Clients */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/25 bg-blue-500/8 text-blue-400 text-xs font-semibold mb-6">
-                Major EMEA Clients
-              </div>
-              <div className="grid gap-3">
-                {emeaClients.map((c) => (
-                  <div key={c.name} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-blue-500/20 hover:bg-blue-500/[0.03] transition-all group">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-black text-xs">{c.initials}</span>
-                      </div>
-                      <div>
-                        <p className="text-white font-semibold text-sm group-hover:text-blue-300 transition-colors">{c.name}</p>
-                        <p className="text-gray-500 text-xs">{c.sector}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-500">{c.country}</span>
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/60" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="text-gray-700 text-xs mt-4 text-center">
-                Enterprise clients listed by sector and region for illustrative purposes.
-              </p>
-            </div>
+          <div className="flex flex-wrap gap-2.5">
+            {[
+              { label: "Privacy First", color: "emerald" },
+              { label: "ISO 27001 Ready", color: "blue" },
+              { label: "SOC 2 Type II", color: "violet" },
+              { label: "GDPR Compliant", color: "amber" },
+              { label: "Global Coverage", color: "cyan" },
+            ].map((b) => (
+              <span
+                key={b.label}
+                className="px-3 py-1.5 rounded-lg border text-xs font-semibold"
+                style={{
+                  borderColor: `var(--${b.color}-500, #10b981)25`,
+                  backgroundColor: `var(--${b.color}-500, #10b981)10`,
+                  color: `var(--${b.color}-400, #34d399)`,
+                }}
+              >
+                {b.label}
+              </span>
+            ))}
           </div>
         </div>
       </section>
@@ -438,7 +394,7 @@ export default function HomePage() {
             What recruiters say
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Real results from real teams</h2>
-          <p className="text-gray-400 max-w-lg mx-auto">Hiring teams across EMEA are cutting sourcing time and improving candidate quality with ShiftHire.</p>
+          <p className="text-gray-400 max-w-lg mx-auto">Hiring teams worldwide are cutting sourcing time and improving candidate quality with ShiftHire.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -547,7 +503,7 @@ export default function HomePage() {
             </span>
           </h2>
           <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-            100 free credits on signup. No credit card. No commitment. See why EMEA recruitment teams are switching to ShiftHire.
+            100 free credits on signup. No credit card. No commitment. See why recruitment teams worldwide are switching to ShiftHire.
           </p>
           <Link
             href="/register"
@@ -569,7 +525,7 @@ export default function HomePage() {
             <div className="mb-4">
               <ShiftHireLogo size="xs" />
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">AI-powered recruitment for EMEA enterprises. Sourcing candidates in minutes, not days.</p>
+            <p className="text-gray-500 text-sm leading-relaxed">AI-powered recruitment for teams worldwide. Sourcing candidates in minutes, not days.</p>
           </div>
           <div>
             <p className="text-gray-300 font-semibold text-sm mb-3">Product</p>
