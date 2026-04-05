@@ -3,15 +3,44 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Base */
+  --background: #080b14;
+  --foreground: #f1f5f9;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Popover / dropdown (Select, etc.) */
+  --popover: #0f172a;
+  --popover-foreground: #f1f5f9;
+
+  /* Card */
+  --card: #0f172a;
+  --card-foreground: #f1f5f9;
+
+  /* Primary */
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+
+  /* Muted */
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  /* Accent (hover state in dropdowns) */
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+
+  /* Destructive */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  /* Border / Input / Ring */
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #3b82f6;
+
+  --radius: 0.5rem;
 }
 
 body {
