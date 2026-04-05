@@ -11,9 +11,10 @@ export const processJob = inngest.createFunction(
     triggers: [{ event: "job/process" }],
   },
   async ({ event, step }) => {
-    const data = event.data as Record<string, unknown>;
-    const jobId = (data?.jobId ?? data?.data?.jobId) as string | undefined;
-    if (!jobId) throw new Error(`Missing jobId. Received event.data: ${JSON.stringify(data)}`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const eventData = event.data as any;
+    const jobId = (eventData?.jobId ?? eventData?.data?.jobId) as string | undefined;
+    if (!jobId) throw new Error(`Missing jobId. Received event.data: ${JSON.stringify(eventData)}`);
 
     // Step 1: Mark job as processing and fetch it
     const job = await step.run("fetch-and-start", async () => {
