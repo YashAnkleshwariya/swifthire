@@ -35,14 +35,19 @@ export async function POST(req: NextRequest) {
     }
 
     // Create app User row linked to the Supabase Auth UUID
-    await prisma.user.create({
-      data: {
-        id: data.user.id,
-        email: validated.email.toLowerCase(),
-        name: validated.name.trim(),
-        credits: 100,
-      },
-    });
+    try {
+      await prisma.user.create({
+        data: {
+          id: data.user.id,
+          email: validated.email.toLowerCase(),
+          name: validated.name.trim(),
+          credits: 100,
+        },
+      });
+    } catch (dbError) {
+      console.error("Prisma user.create failed:", JSON.stringify(dbError, Object.getOwnPropertyNames(dbError)));
+      throw dbError;
+    }
 
     return NextResponse.json(
       {
