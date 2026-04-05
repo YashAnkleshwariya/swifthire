@@ -44,9 +44,15 @@ export async function POST(req: NextRequest) {
           credits: 100,
         },
       });
-    } catch (dbError) {
-      console.error("Prisma user.create failed:", JSON.stringify(dbError, Object.getOwnPropertyNames(dbError)));
-      throw dbError;
+    } catch (dbError: unknown) {
+      const msg = dbError instanceof Error ? dbError.message : String(dbError);
+      const code = (dbError as Record<string, unknown>)?.code;
+      const meta = (dbError as Record<string, unknown>)?.meta;
+      console.error("DB_ERROR_DETAILS:", JSON.stringify({ msg, code, meta }));
+      return NextResponse.json(
+        { success: false, error: `DB: ${msg} | code: ${code} | meta: ${JSON.stringify(meta)}` },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
