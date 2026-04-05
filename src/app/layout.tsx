@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { Toaster } from "@/components/ui/toaster";
+import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <Toaster />
+        <CookieBanner />
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
             defer

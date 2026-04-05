@@ -50,9 +50,9 @@ export default function DashboardLayout({
           </button>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-xs font-bold text-white">LM</span>
+              <span className="text-xs font-bold text-white">SH</span>
             </div>
-            <span className="font-semibold text-gray-800 dark:text-white text-sm">LinkedIn Matcher</span>
+            <span className="font-semibold text-gray-800 dark:text-white text-sm">ShiftHire</span>
           </div>
         </div>
 
