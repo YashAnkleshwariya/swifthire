@@ -92,7 +92,7 @@ function scoreColor(score: number): string {
 
 function ProgressBar({ progress }: { progress: number }) {
   return (
-    <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-3">
+    <div className="w-full bg-white/10 rounded-full h-3">
       <div
         className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
         style={{ width: `${progress}%` }}
@@ -215,10 +215,10 @@ export default function JobDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-12 min-h-screen">
+      <div className="flex items-center justify-center p-12 min-h-screen bg-[#080b14]">
         <div className="text-center space-y-3">
           <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500 dark:text-gray-400">Loading job details...</p>
+          <p className="text-gray-500">Loading job details...</p>
         </div>
       </div>
     );
@@ -226,8 +226,8 @@ export default function JobDetailPage() {
 
   if (!job) {
     return (
-      <div className="flex items-center justify-center p-12 min-h-screen">
-        <p className="text-gray-500 dark:text-gray-400">Job not found</p>
+      <div className="flex items-center justify-center p-12 min-h-screen bg-[#080b14]">
+        <p className="text-gray-500">Job not found</p>
       </div>
     );
   }
@@ -242,7 +242,7 @@ export default function JobDetailPage() {
     className?: string;
   }) => (
     <TableHead
-      className={`cursor-pointer select-none hover:bg-gray-50 dark:hover:bg-slate-700/50 ${className ?? ""}`}
+      className={`cursor-pointer select-none hover:bg-white/5 ${className ?? ""}`}
       onClick={() => handleSort(sortId)}
     >
       {label} {sortKey === sortId ? (sortAsc ? "↑" : "↓") : ""}
@@ -250,14 +250,14 @@ export default function JobDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-6">
+    <div className="min-h-screen bg-[#080b14] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
         <div className="mb-6">
           <Button
             variant="ghost"
             onClick={() => router.push("/dashboard")}
-            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+            className="text-gray-400 hover:text-white"
           >
             ← Back to Dashboard
           </Button>
@@ -268,13 +268,13 @@ export default function JobDetailPage() {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {job.title}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-gray-500 mt-1">
             {job.location ?? "No location"} · Created {new Date(job.createdAt).toLocaleDateString()}
           </p>
         </div>
 
         {/* Job Summary Card */}
-        <Card className="mb-6 border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+        <Card className="mb-6 border-0 shadow-xl bg-white/[0.04] border border-white/[0.07]">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>
@@ -293,14 +293,14 @@ export default function JobDetailPage() {
           </CardHeader>
           {job.searchQuery && isAdmin && (
             <CardContent>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-2">
+              <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
                 <span className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded">
                   Admin only
                 </span>
                 Generated Search Query:
               </p>
               <div className="flex items-start gap-2">
-                <p className="text-sm bg-gray-100 dark:bg-slate-700 p-3 rounded-md font-mono flex-1">
+                <p className="text-sm bg-white/[0.06] p-3 rounded-md font-mono flex-1 text-gray-300">
                   {job.searchQuery}
                 </p>
                 <Button
@@ -319,14 +319,14 @@ export default function JobDetailPage() {
 
         {/* Processing Progress — with prominent step label */}
         {progress.isProcessing && (
-          <Card className="mb-6 border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+          <Card className="mb-6 border-0 shadow-xl bg-white/[0.04] border border-white/[0.07]">
             <CardHeader>
               <CardTitle className="text-lg">Processing</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {/* Prominent step display */}
               {progress.currentStep && (
-                <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl px-4 py-3 border border-blue-100 dark:border-blue-800/30">
+                <div className="flex items-center gap-3 bg-blue-500/10 rounded-xl px-4 py-3 border border-blue-500/20">
                   <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse flex-shrink-0" />
                   <span className="text-sm font-semibold text-blue-800 dark:text-blue-300 flex-1">
                     {stepLabels[progress.currentStep] ??
@@ -355,11 +355,11 @@ export default function JobDetailPage() {
 
         {/* Results Table */}
         {candidates.length > 0 && (
-          <Card className="border-0 shadow-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-            <CardHeader className="border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-gray-50 to-white dark:from-slate-800 dark:to-slate-800">
+          <Card className="border-0 shadow-2xl bg-white/[0.04] border border-white/[0.07]">
+            <CardHeader className="border-b border-white/[0.07] bg-white/[0.02]">
               <div className="flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <CardTitle className="text-xl font-bold text-gray-800 dark:text-white">
+                  <CardTitle className="text-xl font-bold text-white">
                     🏆 Ranked Candidates ({sortedCandidates.length}
                     {minMatch > 0 ? ` of ${candidates.length}` : ""})
                   </CardTitle>
@@ -369,7 +369,7 @@ export default function JobDetailPage() {
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <label className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                    <label className="text-sm text-gray-400 whitespace-nowrap">
                       Min match:
                     </label>
                     <Input
@@ -397,7 +397,7 @@ export default function JobDetailPage() {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gray-50/50 dark:bg-slate-700/30">
+                    <TableRow className="bg-white/[0.03]">
                       <SortHeader label="#" sortId="rank" className="w-12" />
                       <TableHead>Name</TableHead>
                       <TableHead>Title</TableHead>
@@ -411,7 +411,7 @@ export default function JobDetailPage() {
                     {sortedCandidates.map((c) => (
                       <TableRow
                         key={c.id}
-                        className="hover:bg-blue-50/30 dark:hover:bg-slate-700/20 transition-colors"
+                        className="hover:bg-white/[0.03] transition-colors"
                       >
                         <TableCell className="font-bold text-gray-700 dark:text-gray-300">
                           {c.rank ?? "-"}
@@ -426,10 +426,10 @@ export default function JobDetailPage() {
                             {c.name}
                           </a>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600 dark:text-gray-400 max-w-[200px] truncate">
+                        <TableCell className="text-sm text-gray-400 max-w-[200px] truncate">
                           {c.profileTitle ?? "-"}
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600 dark:text-gray-400">
+                        <TableCell className="text-sm text-gray-400">
                           {c.location ?? "-"}
                         </TableCell>
                         <TableCell className="text-center">
@@ -503,8 +503,8 @@ function CandidateDetailDialog({
           {eval_ && (
             <>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg flex-1">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Match Score</span>
+                <div className="flex items-center gap-2 p-3 bg-white/[0.06] rounded-lg flex-1">
+                  <span className="text-sm text-gray-400">Match Score</span>
                   <span className={`font-bold text-lg ${scoreColor(eval_.matchScore)}`}>
                     {eval_.matchScore}%
                   </span>
@@ -522,7 +522,7 @@ function CandidateDetailDialog({
 
               {eval_.whyMatched && eval_.whyMatched.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">Why Matched</h4>
+                  <h4 className="font-semibold mb-2 text-white">Why Matched</h4>
                   <ul className="space-y-1.5">
                     {eval_.whyMatched.map((reason, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
@@ -538,8 +538,8 @@ function CandidateDetailDialog({
 
           {candidate.profileText && (
             <div>
-              <h4 className="font-semibold mb-2 text-gray-800 dark:text-white">Profile Text</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto leading-relaxed">
+              <h4 className="font-semibold mb-2 text-white">Profile Text</h4>
+              <p className="text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto leading-relaxed">
                 {candidate.profileText}
               </p>
             </div>

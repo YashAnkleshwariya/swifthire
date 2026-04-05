@@ -2,23 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 interface Job {
   id: string;
@@ -42,11 +26,11 @@ interface Pagination {
   total: number;
 }
 
-const statusColors: Record<string, string> = {
-  PENDING: "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md",
-  PROCESSING: "bg-gradient-to-r from-blue-400 to-cyan-400 text-white shadow-md animate-pulse",
-  COMPLETED: "bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-md",
-  FAILED: "bg-gradient-to-r from-red-400 to-pink-500 text-white shadow-md",
+const statusConfig: Record<string, { label: string; color: string; dot: string }> = {
+  PENDING: { label: "Pending", color: "bg-amber-500/15 text-amber-400 border border-amber-500/20", dot: "bg-amber-400" },
+  PROCESSING: { label: "Processing", color: "bg-blue-500/15 text-blue-400 border border-blue-500/20", dot: "bg-blue-400 animate-pulse" },
+  COMPLETED: { label: "Completed", color: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20", dot: "bg-emerald-400" },
+  FAILED: { label: "Failed", color: "bg-red-500/15 text-red-400 border border-red-500/20", dot: "bg-red-400" },
 };
 
 const LIMIT = 10;
@@ -80,10 +64,7 @@ export default function DashboardPage() {
         setStats({
           credits: userData.data.credits,
           totalJobs: jobsData.pagination?.total ?? jobsList.length,
-          totalCandidates: jobsList.reduce(
-            (sum: number, j: Job) => sum + j.totalCandidatesFound,
-            0
-          ),
+          totalCandidates: jobsList.reduce((sum: number, j: Job) => sum + j.totalCandidatesFound, 0),
         });
       }
     } catch (error) {
@@ -93,255 +74,228 @@ export default function DashboardPage() {
     }
   }, [page, statusFilter]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
-  // Auto-refresh only when there are active jobs on screen
   useEffect(() => {
-    const hasActiveJobs = jobs.some(
-      (j) => j.status === "PROCESSING" || j.status === "PENDING"
-    );
-    if (!hasActiveJobs) return;
+    const hasActive = jobs.some((j) => j.status === "PROCESSING" || j.status === "PENDING");
+    if (!hasActive) return;
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
   }, [jobs, fetchData]);
 
-  function handleFilterChange(filter: string) {
-    setStatusFilter(filter === "All" ? "" : filter);
-    setPage(1);
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="p-6 sm:p-8 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#080b14] p-5 sm:p-8">
+      <div className="max-w-7xl mx-auto">
+
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Dashboard
-              </h1>
-              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                AI-powered candidate matching for your job descriptions
-              </p>
-            </div>
-            <Link href="/dashboard/new">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-5 text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                <span className="mr-2 text-xl">+</span> New Job Match
-              </Button>
-            </Link>
+        <div className="flex items-start justify-between mb-10 flex-wrap gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-black text-white mb-1.5">Dashboard</h1>
+            <p className="text-gray-500 text-sm flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              AI-powered candidate matching
+            </p>
           </div>
+          <Link
+            href="/dashboard/new"
+            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-blue-500/30 transition-all hover:scale-[1.03]"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+            </svg>
+            New Job Match
+          </Link>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
-            <CardHeader className="pb-3 relative z-10">
-              <CardDescription className="text-blue-100 font-medium">Credits Remaining</CardDescription>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <p className="text-5xl font-bold mb-2">{stats?.credits ?? "..."}</p>
-              <p className="text-sm text-blue-100 flex items-center gap-1">
-                <span>⚡</span>
-                ~{stats ? Math.floor(stats.credits / 10) : "..."} job matches available
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
-            <CardHeader className="pb-3 relative z-10">
-              <CardDescription className="text-purple-100 font-medium">Total Jobs Run</CardDescription>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <p className="text-5xl font-bold mb-2">{stats?.totalJobs ?? "..."}</p>
-              <p className="text-sm text-purple-100 flex items-center gap-1">
-                <span>🎯</span> Recruitment campaigns
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-pink-500 to-rose-600 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
-            <CardHeader className="pb-3 relative z-10">
-              <CardDescription className="text-pink-100 font-medium">Candidates Found</CardDescription>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <p className="text-5xl font-bold mb-2">{stats?.totalCandidates ?? "..."}</p>
-              <p className="text-sm text-pink-100 flex items-center gap-1">
-                <span>👥</span> LinkedIn profiles matched
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          {[
+            {
+              label: "Credits Remaining",
+              value: stats?.credits ?? "—",
+              sub: stats ? `~${Math.floor(stats.credits / 10)} matches available` : "Loading...",
+              gradient: "from-blue-600 to-cyan-600",
+              glow: "shadow-blue-600/20",
+              icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              ),
+            },
+            {
+              label: "Total Jobs Run",
+              value: stats?.totalJobs ?? "—",
+              sub: "Recruitment campaigns",
+              gradient: "from-violet-600 to-purple-600",
+              glow: "shadow-violet-600/20",
+              icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              ),
+            },
+            {
+              label: "Candidates Found",
+              value: stats?.totalCandidates ?? "—",
+              sub: "LinkedIn profiles matched",
+              gradient: "from-pink-600 to-rose-600",
+              glow: "shadow-pink-600/20",
+              icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              ),
+            },
+          ].map((card) => (
+            <div key={card.label} className={`relative rounded-2xl bg-gradient-to-br ${card.gradient} p-5 shadow-xl ${card.glow} overflow-hidden`}>
+              <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full -mr-10 -mt-10 pointer-events-none" />
+              <div className="relative flex items-start justify-between mb-4">
+                <p className="text-white/70 text-xs font-semibold uppercase tracking-wider">{card.label}</p>
+                <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center text-white">
+                  {card.icon}
+                </div>
+              </div>
+              <p className="text-4xl font-black text-white mb-1 relative">{card.value}</p>
+              <p className="text-white/60 text-xs relative">{card.sub}</p>
+            </div>
+          ))}
         </div>
 
         {/* Jobs Table */}
-        <Card className="border-0 shadow-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-          <CardHeader className="border-b border-gray-100 dark:border-slate-700 bg-gradient-to-r from-gray-50 to-white dark:from-slate-800 dark:to-slate-800 pb-4">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-2xl font-bold text-gray-800 dark:text-white">
-                    📋 Recent Jobs
-                  </CardTitle>
-                  <CardDescription className="mt-1 dark:text-gray-400">
-                    Your job matching requests and results
-                  </CardDescription>
-                </div>
-              </div>
-
-              {/* Status filter pills */}
-              <div className="flex gap-2 flex-wrap">
-                {STATUS_FILTERS.map((s) => {
-                  const active = statusFilter === (s === "All" ? "" : s);
-                  return (
-                    <button
-                      key={s}
-                      onClick={() => handleFilterChange(s)}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors duration-200 ${
-                        active
-                          ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
-                          : "bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  );
-                })}
+        <div className="rounded-2xl bg-white/[0.03] border border-white/[0.07] overflow-hidden">
+          {/* Table header */}
+          <div className="px-6 py-5 border-b border-white/[0.07] flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-white">Recent Jobs</h2>
+                <p className="text-gray-500 text-xs mt-0.5">Your job matching requests and results</p>
               </div>
             </div>
-          </CardHeader>
+            {/* Filters */}
+            <div className="flex gap-2 flex-wrap">
+              {STATUS_FILTERS.map((s) => {
+                const active = statusFilter === (s === "All" ? "" : s);
+                return (
+                  <button
+                    key={s}
+                    onClick={() => { setStatusFilter(s === "All" ? "" : s); setPage(1); }}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      active
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-500/20"
+                        : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300 border border-white/[0.06]"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-          <CardContent className="pt-0">
-            {loading ? (
-              <div className="py-16 text-center">
-                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                <p className="text-gray-500 dark:text-gray-400 text-sm">Loading jobs...</p>
+          {loading ? (
+            <div className="py-20 text-center">
+              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <p className="text-gray-500 text-sm">Loading jobs...</p>
+            </div>
+          ) : jobs.length === 0 ? (
+            <div className="py-24 text-center space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 flex items-center justify-center mx-auto text-3xl">
+                🎯
               </div>
-            ) : jobs.length === 0 ? (
-              /* Enhanced empty state */
-              <div className="text-center py-20 space-y-4">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mx-auto text-5xl">
-                  🎯
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
-                  {statusFilter ? `No ${statusFilter.toLowerCase()} jobs` : "No job matches yet"}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-sm mx-auto text-sm leading-relaxed">
-                  {statusFilter
-                    ? `You have no jobs with status "${statusFilter}". Try a different filter.`
-                    : "Create your first AI-powered job match to start finding LinkedIn candidates instantly."}
-                </p>
-                {!statusFilter && (
-                  <div className="pt-2">
-                    <Link href="/dashboard/new">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                      >
-                        ✨ Create Your First Job Match
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50/50 dark:bg-slate-700/20">
-                        <TableHead>Title</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Candidates</TableHead>
-                        <TableHead>Created</TableHead>
-                        <TableHead />
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {jobs.map((job) => (
-                        <TableRow
-                          key={job.id}
-                          className="hover:bg-blue-50/30 dark:hover:bg-slate-700/20 transition-colors"
-                        >
-                          <TableCell className="font-medium max-w-[220px] truncate text-gray-800 dark:text-gray-200">
-                            {job.title}
-                          </TableCell>
-                          <TableCell className="text-gray-600 dark:text-gray-400 text-sm">
-                            {job.location ?? "—"}
-                          </TableCell>
-                          <TableCell className="text-gray-600 dark:text-gray-400 text-sm">
-                            {job.experienceLevel ?? "—"}
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant="secondary"
-                              className={statusColors[job.status] ?? ""}
-                            >
-                              {job.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-gray-700 dark:text-gray-300">
-                            {job.totalCandidatesFound}
-                          </TableCell>
-                          <TableCell className="text-gray-500 dark:text-gray-400 text-sm">
-                            {new Date(job.createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <Link href={`/dashboard/jobs/${job.id}`}>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="shadow-sm hover:shadow-md transition-shadow"
-                              >
-                                View
-                              </Button>
-                            </Link>
-                          </TableCell>
-                        </TableRow>
+              <h3 className="text-xl font-bold text-white">
+                {statusFilter ? `No ${statusFilter.toLowerCase()} jobs` : "No job matches yet"}
+              </h3>
+              <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">
+                {statusFilter
+                  ? `No jobs with status "${statusFilter}". Try a different filter.`
+                  : "Create your first AI-powered job match to start finding LinkedIn candidates."}
+              </p>
+              {!statusFilter && (
+                <Link
+                  href="/dashboard/new"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-blue-600/20 transition-all hover:scale-[1.03] mt-2"
+                >
+                  Create Your First Job Match
+                </Link>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/[0.06]">
+                      {["Title", "Location", "Level", "Status", "Candidates", "Created", ""].map((h) => (
+                        <th key={h} className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {jobs.map((job, i) => {
+                      const cfg = statusConfig[job.status];
+                      return (
+                        <tr
+                          key={job.id}
+                          className={`border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors ${i === jobs.length - 1 ? "border-b-0" : ""}`}
+                        >
+                          <td className="px-5 py-4 max-w-[220px]">
+                            <p className="text-white font-medium text-sm truncate">{job.title}</p>
+                          </td>
+                          <td className="px-5 py-4 text-gray-400 text-sm">{job.location ?? "—"}</td>
+                          <td className="px-5 py-4 text-gray-400 text-sm">{job.experienceLevel ?? "—"}</td>
+                          <td className="px-5 py-4">
+                            {cfg ? (
+                              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${cfg.color}`}>
+                                <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
+                                {cfg.label}
+                              </span>
+                            ) : (
+                              <Badge variant="secondary">{job.status}</Badge>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 text-gray-300 text-sm font-medium">{job.totalCandidatesFound}</td>
+                          <td className="px-5 py-4 text-gray-500 text-sm">{new Date(job.createdAt).toLocaleDateString()}</td>
+                          <td className="px-5 py-4">
+                            <Link
+                              href={`/dashboard/jobs/${job.id}`}
+                              className="px-3 py-1.5 text-xs font-semibold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg transition-all"
+                            >
+                              View
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
 
-                {/* Pagination */}
-                {pagination && pagination.totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Page {pagination.page} of {pagination.totalPages} · {pagination.total} total jobs
-                    </span>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={page === 1}
-                        onClick={() => setPage((p) => p - 1)}
-                      >
-                        ← Prev
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={page === pagination.totalPages}
-                        onClick={() => setPage((p) => p + 1)}
-                      >
-                        Next →
-                      </Button>
-                    </div>
+              {pagination && pagination.totalPages > 1 && (
+                <div className="flex items-center justify-between px-5 py-4 border-t border-white/[0.06]">
+                  <span className="text-xs text-gray-500">
+                    Page {pagination.page} of {pagination.totalPages} · {pagination.total} total
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      disabled={page === 1}
+                      onClick={() => setPage((p) => p - 1)}
+                      className="px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    >
+                      ← Prev
+                    </button>
+                    <button
+                      disabled={page === pagination.totalPages}
+                      onClick={() => setPage((p) => p + 1)}
+                      className="px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    >
+                      Next →
+                    </button>
                   </div>
-                )}
-              </>
-            )}
-          </CardContent>
-        </Card>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

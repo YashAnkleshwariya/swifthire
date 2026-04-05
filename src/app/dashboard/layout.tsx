@@ -27,7 +27,7 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="flex min-h-screen bg-[#080b14]">
       <Sidebar
         credits={user?.credits}
         userName={user?.name ?? undefined}
@@ -38,10 +38,10 @@ export default function DashboardLayout({
 
       <main className="flex-1 overflow-auto min-w-0">
         {/* Mobile top bar — visible only on small screens */}
-        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-30">
+        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-[#080b14]/95 backdrop-blur-sm border-b border-white/[0.06] sticky top-0 z-30">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors"
             aria-label="Open navigation menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ export default function DashboardLayout({
             <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
               <span className="text-xs font-bold text-white">SH</span>
             </div>
-            <span className="font-semibold text-gray-800 dark:text-white text-sm">ShiftHire</span>
+            <span className="font-semibold text-white text-sm">ShiftHire</span>
           </div>
         </div>
 

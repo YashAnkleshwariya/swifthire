@@ -110,14 +110,14 @@ export default function BillingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-8">
+    <div className="min-h-screen bg-[#080b14] p-5 sm:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Page Header */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Billing & Credits
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-gray-400">
             Manage your subscription and credits
           </p>
         </div>
@@ -139,15 +139,15 @@ export default function BillingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-5">Choose a Plan</h2>
+        <h2 className="text-xl font-bold text-white mb-5">Choose a Plan</h2>
         <div className="grid md:grid-cols-3 gap-6 mb-10">
           {plans.map((plan) => (
             <Card
               key={plan.id}
               className={
                 plan.popular
-                  ? "border-2 border-blue-500/60 shadow-xl shadow-blue-500/10 relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm"
-                  : "border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm relative"
+                  ? "border-2 border-blue-500/40 shadow-xl shadow-blue-500/10 relative bg-blue-500/[0.06]"
+                  : "border border-white/[0.07] shadow-xl bg-white/[0.03] relative"
               }
             >
               {plan.popular && (
@@ -158,18 +158,18 @@ export default function BillingPage() {
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <CardDescription>
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                  <span className="text-4xl font-bold text-white">
                     ${plan.price}
                   </span>
                   {plan.price > 0 && (
-                    <span className="text-gray-500 dark:text-gray-400 ml-1">/month</span>
+                    <span className="text-gray-500 ml-1">/month</span>
                   )}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-300">
                       <svg
                         className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"
                         fill="none"
@@ -209,8 +209,8 @@ export default function BillingPage() {
         </div>
 
         {/* Buy Additional Credits */}
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-5">One-Time Credits</h2>
-        <Card className="border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+        <h2 className="text-xl font-bold text-white mb-5">One-Time Credits</h2>
+        <Card className="border border-white/[0.07] shadow-xl bg-white/[0.03]">
           <CardHeader>
             <CardTitle>Buy Additional Credits</CardTitle>
             <CardDescription>
@@ -218,10 +218,10 @@ export default function BillingPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-100 dark:border-blue-800/30">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl border border-blue-500/20">
               <div>
-                <p className="font-semibold text-gray-800 dark:text-white">100 Credits Pack</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="font-semibold text-white">100 Credits Pack</p>
+                <p className="text-sm text-gray-500">
                   10 additional job matches · never expires
                 </p>
               </div>
