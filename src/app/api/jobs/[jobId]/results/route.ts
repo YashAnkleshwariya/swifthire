@@ -32,7 +32,17 @@ export async function GET(
 
     if (candidatesError) throw new Error(candidatesError.message);
 
-    return NextResponse.json({ success: true, job: jobResponse, candidates: candidates ?? [] });
+    // Supabase returns the reverse-FK relation as an array; normalise to object|null
+    const normalizedCandidates = (candidates ?? []).map((c) => {
+      const ev = c.evaluation;
+      return {
+        ...c,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        evaluation: Array.isArray(ev) ? ((ev as any[])[0] ?? null) : ev,
+      };
+    });
+
+    return NextResponse.json({ success: true, job: jobResponse, candidates: normalizedCandidates });
   } catch (error) {
     return handleApiError(error);
   }
