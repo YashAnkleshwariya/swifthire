@@ -34,6 +34,26 @@ export async function POST(req: NextRequest) {
     }
 
     const admin = getAdminClient();
+
+    // Check whether a profile row already exists for this auth user.
+    // signUp() returns the existing user without error when email confirmations
+    // are disabled, so we must guard against re-inserting with credits: 100.
+    const { data: existingProfile } = await admin
+      .from("User")
+      .select("id")
+      .eq("id", data.user.id)
+      .single();
+
+    if (existingProfile) {
+      // User already has a profile — this is effectively a duplicate registration
+      // attempt. Return success so the client is redirected normally, but do NOT
+      // touch credits or any other field.
+      return NextResponse.json(
+        { success: true, user: { id: data.user.id, email: data.user.email, name: validated.name.trim() } },
+        { status: 201 }
+      );
+    }
+
     const { error: dbError } = await admin.from("User").insert({
       id: data.user.id,
       email: validated.email.toLowerCase(),
