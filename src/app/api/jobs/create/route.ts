@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { getAdminClient } from "@/lib/supabase/admin";
 import { inngest } from "@/inngest/client";
+import { processJobEvent } from "@/inngest/functions/job-processor";
 import { createJobSchema } from "@/lib/validations/job";
 import { handleApiError, InsufficientCreditsError } from "@/lib/errors";
 const CREDIT_COST = 10;
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
       createdAt: now,
     });
 
-    await inngest.send({ name: "job/process", data: { jobId } });
+    await inngest.send(processJobEvent.create({ jobId }));
 
     return NextResponse.json(
       { success: true, jobId, status: "QUEUED", creditsRemaining: newCredits },

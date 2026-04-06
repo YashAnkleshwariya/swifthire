@@ -1,20 +1,19 @@
+import { eventType, staticSchema } from "inngest";
 import { inngest } from "@/inngest/client";
 import { getAdminClient } from "@/lib/supabase/admin";
 import { generateSearchQuery } from "@/services/query-generator";
 import { searchLinkedInProfiles } from "@/services/exa-search";
 import { evaluateCandidate } from "@/services/candidate-evaluator";
 
+export const processJobEvent = eventType("job/process", {
+  schema: staticSchema<{ jobId: string }>(),
+});
+
 export const processJob = inngest.createFunction(
-  {
-    id: "process-job",
-    retries: 3,
-    triggers: [{ event: "job/process" }],
-  },
+  { id: "process-job", retries: 3, triggers: [processJobEvent] },
   async ({ event, step }) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const eventData = event.data as any;
-    const jobId = (eventData?.jobId ?? eventData?.data?.jobId) as string | undefined;
-    if (!jobId) throw new Error(`Missing jobId. Received event.data: ${JSON.stringify(eventData)}`);
+    const { jobId } = event.data;
+    if (!jobId) throw new Error(`Missing jobId. Received event.data: ${JSON.stringify(event.data)}`);
 
     // Step 1: Mark job as processing and fetch it
     const job = await step.run("fetch-and-start", async () => {
