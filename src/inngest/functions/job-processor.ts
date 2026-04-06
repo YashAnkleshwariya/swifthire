@@ -90,7 +90,6 @@ export const processJob = inngest.createFunction(
         workHistory: c.workHistory ? JSON.parse(JSON.stringify(c.workHistory)) : null,
         exaScore: c.exaScore,
         createdAt: now,
-        updatedAt: now,
       }));
 
       const { data, error } = await admin.from("Candidate").insert(inserts).select("id");
@@ -131,7 +130,6 @@ export const processJob = inngest.createFunction(
             matchScore: evalResult.matchScore,
             matchBand: evalResult.matchBand,
             whyMatched: evalResult.whyMatched,
-            createdAt: now,
           });
 
           return { candidateId: candidate.id, score: evalResult.matchScore };
@@ -142,7 +140,6 @@ export const processJob = inngest.createFunction(
             matchScore: 0,
             matchBand: "below_50",
             whyMatched: [],
-            createdAt: now,
           });
           return { candidateId: candidate.id, score: 0 };
         }
@@ -161,7 +158,7 @@ export const processJob = inngest.createFunction(
 
       await Promise.all(
         evaluations.map((e, idx) =>
-          admin.from("Candidate").update({ rank: idx + 1, updatedAt: now }).eq("id", e.candidateId)
+          admin.from("Candidate").update({ rank: idx + 1 }).eq("id", e.candidateId)
         )
       );
 
