@@ -125,7 +125,7 @@ async function handleLogout() {
 export default function AdminPage() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   useEffect(() => {
     fetchStats();
@@ -219,7 +219,7 @@ export default function AdminPage() {
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
             <span className="text-green-400 font-medium">LIVE</span>
             <span className="hidden sm:inline text-slate-600">
-              · {lastRefresh.toLocaleTimeString()}
+              {lastRefresh ? `· ${lastRefresh.toLocaleTimeString()}` : ""}
             </span>
           </div>
 

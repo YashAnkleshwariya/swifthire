@@ -38,7 +38,7 @@ export function ShiftHireLogo({ size = "sm", showText = true, className }: Shift
       </div>
 
       {showText && (
-        <span className={cn(s.text, "text-foreground tracking-tight leading-none")}>
+        <span className={cn(s.text, "text-gray-900 dark:text-white tracking-tight leading-none")}>
           Shift<span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Hire</span>
         </span>
       )}
