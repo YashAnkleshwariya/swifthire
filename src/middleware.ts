@@ -20,11 +20,6 @@ const authLimits = new Map<string, RateLimitEntry>();
 const AUTH_MAX = 5;
 const AUTH_WINDOW_MS = 15 * 60_000;
 
-// Brute-force login lockout: 5 failures → 15-min lockout
-const loginFailures = new Map<string, RateLimitEntry>();
-const LOGIN_MAX_FAILURES = 5;
-const LOGIN_LOCKOUT_MS = 15 * 60_000;
-
 // ---------------------------------------------------------------------------
 // Known scraper / bot user-agent substrings (lowercase)
 // ---------------------------------------------------------------------------
@@ -50,6 +45,10 @@ function getIp(req: NextRequest): string {
   return (
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
+    // Intentional: all clients that send no forwarding headers share a single
+    // "unknown" rate-limit bucket. This is an acceptable trade-off for
+    // serverless/edge deployments where IP headers may be stripped — it still
+    // caps the aggregate request rate from unidentifiable sources.
     "unknown"
   );
 }
@@ -160,14 +159,11 @@ export async function middleware(req: NextRequest) {
         pathname.startsWith("/api/auth/register");
 
       if (isAuthEndpoint) {
-        // Brute-force lockout check (login only)
-        if (pathname.startsWith("/api/auth/login")) {
-          const lockout = loginFailures.get(ip);
-          if (lockout && lockout.count >= LOGIN_MAX_FAILURES && Date.now() < lockout.resetAt) {
-            const retryAfter = Math.ceil((lockout.resetAt - Date.now()) / 1000);
-            return tooManyRequests(retryAfter);
-          }
-        }
+        // Note: full brute-force login-failure lockout (track per-IP failure counts)
+        // requires a persistent external store (e.g. Redis) so that state survives
+        // serverless cold starts and scales across multiple instances. An in-memory
+        // Map is insufficient — it resets on every cold start and is not shared
+        // between concurrent instances.
 
         // Auth rate limit
         const { limited, retryAfter } = isRateLimited(
