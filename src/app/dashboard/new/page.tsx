@@ -69,13 +69,13 @@ export default function NewJobPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080b14] p-5 sm:p-8">
+    <div className="min-h-screen bg-background p-5 sm:p-8">
       <div className="max-w-3xl mx-auto">
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-1.5">New Job Match</h1>
-          <p className="text-gray-500 text-sm">Paste a job description and let AI find matching LinkedIn candidates</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-foreground mb-1.5">New Job Match</h1>
+          <p className="text-muted-foreground text-sm">Paste a job description and let AI find matching LinkedIn candidates</p>
         </div>
 
         {/* Credit badge */}
@@ -94,7 +94,7 @@ export default function NewJobPage() {
               <p className={`text-sm font-semibold ${insufficientCredits ? "text-red-400" : "text-blue-400"}`}>
                 {credits !== null ? `${credits} credits available` : "Loading credits..."}
               </p>
-              <p className="text-gray-600 text-xs">Each job match costs {CREDIT_COST} credits</p>
+              <p className="text-muted-foreground text-xs">Each job match costs {CREDIT_COST} credits</p>
             </div>
           </div>
           {insufficientCredits && (
@@ -105,16 +105,16 @@ export default function NewJobPage() {
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl bg-white/[0.03] border border-white/[0.07] overflow-hidden">
-          <div className="px-6 py-5 border-b border-white/[0.06]">
-            <h2 className="text-base font-bold text-white">Job Details</h2>
-            <p className="text-gray-500 text-xs mt-0.5">Fill in the details below to start matching</p>
+        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden">
+          <div className="px-6 py-5 border-b border-subtle">
+            <h2 className="text-base font-bold text-foreground">Job Details</h2>
+            <p className="text-muted-foreground text-xs mt-0.5">Fill in the details below to start matching</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* Job Description */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-300">
+              <label className="block text-sm font-semibold text-foreground">
                 Job Description <span className="text-red-400">*</span>
               </label>
               <textarea
@@ -124,26 +124,26 @@ export default function NewJobPage() {
                 required
                 minLength={50}
                 rows={12}
-                className="w-full bg-white/[0.04] border border-white/[0.08] text-white placeholder-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-y transition-all"
+                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-y transition-all"
               />
-              <p className="text-xs text-gray-600">{form.description.length} / 10,000 characters (min 50)</p>
+              <p className="text-xs text-muted-foreground">{form.description.length} / 10,000 characters (min 50)</p>
             </div>
 
             {/* Location */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-300">Location</label>
+              <label className="block text-sm font-semibold text-foreground">Location</label>
               <input
                 type="text"
                 placeholder="e.g. London, UK or Remote — EMEA"
                 value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
-                className="w-full bg-white/[0.04] border border-white/[0.08] text-white placeholder-gray-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
               />
             </div>
 
             {/* Experience Level */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-300">Experience Level</label>
+              <label className="block text-sm font-semibold text-foreground">Experience Level</label>
               <Select value={form.experienceLevel} onValueChange={(val) => setForm({ ...form, experienceLevel: val })}>
                 <SelectTrigger className="bg-white/[0.04] border-white/[0.08] text-white focus:ring-blue-500/50 rounded-xl">
                   <SelectValue placeholder="Select experience level" />
@@ -160,7 +160,7 @@ export default function NewJobPage() {
             {/* Candidate Limit */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-gray-300">Number of Candidates</label>
+                <label className="text-sm font-semibold text-foreground">Number of Candidates</label>
                 <span className="text-lg font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   {form.candidateLimit}
                 </span>
@@ -171,7 +171,7 @@ export default function NewJobPage() {
                 min={5} max={50} step={5}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-600">
+              <div className="flex justify-between text-xs text-muted-foreground">
                 <span>5 candidates</span>
                 <span>50 candidates</span>
               </div>
