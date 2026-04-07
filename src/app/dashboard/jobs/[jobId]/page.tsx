@@ -203,21 +203,9 @@ function scoreGradient(score: number): string {
 }
 
 function scoreColor(score: number): string {
-  if (score >= 80) return "text-green-600 dark:text-green-400";
-  if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
-  return "text-red-600 dark:text-red-400";
-}
-
-
-function ProgressBar({ progress }: { progress: number }) {
-  return (
-    <div className="w-full bg-muted rounded-full h-3">
-      <div
-        className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
-  );
+  if (score >= 80) return "text-green-500";
+  if (score >= 60) return "text-yellow-500";
+  return "text-red-500";
 }
 
 export default function JobDetailPage() {
@@ -364,7 +352,7 @@ export default function JobDetailPage() {
   }
 
   // Failed state
-  if (progress.isFailed) {
+  if (progress.isFailed || job.status === "FAILED") {
     return (
       <FailedScreen
         error={progress.error}
@@ -427,7 +415,7 @@ export default function JobDetailPage() {
               </div>
               <Badge
                 variant="secondary"
-                className={jobStatusColors[job.status] ?? "bg-gray-100 text-gray-800"}
+                className={jobStatusColors[job.status] ?? "bg-muted text-muted-foreground"}
               >
                 {job.status}
               </Badge>
