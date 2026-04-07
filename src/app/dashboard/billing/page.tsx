@@ -110,14 +110,14 @@ export default function BillingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080b14] p-5 sm:p-8">
+    <div className="min-h-screen bg-background p-5 sm:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Page Header */}
         <div className="mb-10">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Billing & Credits
           </h1>
-          <p className="text-lg text-gray-400">
+          <p className="text-lg text-muted-foreground">
             Manage your subscription and credits
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function BillingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <h2 className="text-xl font-bold text-white mb-5">Choose a Plan</h2>
+        <h2 className="text-xl font-bold text-foreground mb-5">Choose a Plan</h2>
         <div className="grid md:grid-cols-3 gap-6 mb-10">
           {plans.map((plan) => (
             <Card
@@ -158,18 +158,18 @@ export default function BillingPage() {
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <CardDescription>
-                  <span className="text-4xl font-bold text-white">
+                  <span className="text-4xl font-bold text-foreground">
                     ${plan.price}
                   </span>
                   {plan.price > 0 && (
-                    <span className="text-gray-500 ml-1">/month</span>
+                    <span className="text-muted-foreground ml-1">/month</span>
                   )}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-300">
+                    <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground/80">
                       <svg
                         className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"
                         fill="none"
@@ -209,7 +209,7 @@ export default function BillingPage() {
         </div>
 
         {/* Buy Additional Credits */}
-        <h2 className="text-xl font-bold text-white mb-5">One-Time Credits</h2>
+        <h2 className="text-xl font-bold text-foreground mb-5">One-Time Credits</h2>
         <Card className="border border-white/[0.07] shadow-xl bg-white/[0.03]">
           <CardHeader>
             <CardTitle>Buy Additional Credits</CardTitle>
@@ -220,8 +220,8 @@ export default function BillingPage() {
           <CardContent>
             <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl border border-blue-500/20">
               <div>
-                <p className="font-semibold text-white">100 Credits Pack</p>
-                <p className="text-sm text-gray-500">
+                <p className="font-semibold text-foreground">100 Credits Pack</p>
+                <p className="text-sm text-muted-foreground">
                   10 additional job matches · never expires
                 </p>
               </div>
