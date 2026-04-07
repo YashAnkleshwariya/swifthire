@@ -101,7 +101,7 @@ export function Sidebar({
         {/* Logo Section */}
         <div className="p-6 border-b border-border">
           <ShiftHireLogo size="sm" />
-          <p className="text-xs text-gray-500 mt-1 ml-[44px]">AI Recruitment Tool</p>
+          <p className="text-xs text-muted-foreground mt-1 ml-[44px]">AI Recruitment Tool</p>
         </div>
 
         {/* Navigation */}
@@ -141,7 +141,7 @@ export function Sidebar({
           {/* Credits Card */}
           <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-300 flex items-center gap-1.5">
+              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                 <span>⚡</span>
                 Credits
               </span>
@@ -149,7 +149,7 @@ export function Sidebar({
                 {credits ?? "..."}
               </span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-1.5 overflow-hidden">
+            <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
                 style={{ width: `${credits ? Math.min((credits / 100) * 100, 100) : 0}%` }}
@@ -163,13 +163,13 @@ export function Sidebar({
               {userName?.charAt(0)?.toUpperCase() ?? "U"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">
+              <p className="text-sm font-medium text-foreground truncate">
                 {userName ?? "Loading..."}
               </p>
               {isAdmin ? (
                 <p className="text-xs text-red-400 font-semibold">Administrator</p>
               ) : (
-                <p className="text-xs text-gray-400">Active User</p>
+                <p className="text-xs text-muted-foreground">Active User</p>
               )}
             </div>
           </div>
