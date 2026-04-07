@@ -84,14 +84,14 @@ export default function DashboardPage() {
   }, [jobs, fetchData]);
 
   return (
-    <div className="min-h-screen bg-[#080b14] p-5 sm:p-8">
+    <div className="min-h-screen bg-background p-5 sm:p-8">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="flex items-start justify-between mb-10 flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white mb-1.5">Dashboard</h1>
-            <p className="text-gray-500 text-sm flex items-center gap-2">
+            <h1 className="text-3xl sm:text-4xl font-black text-foreground mb-1.5">Dashboard</h1>
+            <p className="text-muted-foreground text-sm flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               AI-powered candidate matching
             </p>
@@ -162,13 +162,13 @@ export default function DashboardPage() {
         </div>
 
         {/* Jobs Table */}
-        <div className="rounded-2xl bg-white/[0.03] border border-white/[0.07] overflow-hidden">
+        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden">
           {/* Table header */}
-          <div className="px-6 py-5 border-b border-white/[0.07] flex flex-col gap-4">
+          <div className="px-6 py-5 border-b border-subtle flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-white">Recent Jobs</h2>
-                <p className="text-gray-500 text-xs mt-0.5">Your job matching requests and results</p>
+                <h2 className="text-lg font-bold text-foreground">Recent Jobs</h2>
+                <p className="text-muted-foreground text-xs mt-0.5">Your job matching requests and results</p>
               </div>
             </div>
             {/* Filters */}
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                     className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                       active
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md shadow-blue-500/20"
-                        : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300 border border-white/[0.06]"
+                        : "bg-surface-1 text-muted-foreground hover:bg-surface-2 hover:text-foreground border border-subtle"
                     }`}
                   >
                     {s}
@@ -195,17 +195,17 @@ export default function DashboardPage() {
           {loading ? (
             <div className="py-20 text-center">
               <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-              <p className="text-gray-500 text-sm">Loading jobs...</p>
+              <p className="text-muted-foreground text-sm">Loading jobs...</p>
             </div>
           ) : jobs.length === 0 ? (
             <div className="py-24 text-center space-y-4">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 flex items-center justify-center mx-auto text-3xl">
                 🎯
               </div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-foreground">
                 {statusFilter ? `No ${statusFilter.toLowerCase()} jobs` : "No job matches yet"}
               </h3>
-              <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">
+              <p className="text-muted-foreground text-sm max-w-sm mx-auto leading-relaxed">
                 {statusFilter
                   ? `No jobs with status "${statusFilter}". Try a different filter.`
                   : "Create your first AI-powered job match to start finding LinkedIn candidates."}
@@ -224,9 +224,9 @@ export default function DashboardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/[0.06]">
+                    <tr className="border-b border-subtle">
                       {["Title", "Location", "Level", "Status", "Candidates", "Created", ""].map((h) => (
-                        <th key={h} className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
+                        <th key={h} className="px-5 py-3.5 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -236,13 +236,13 @@ export default function DashboardPage() {
                       return (
                         <tr
                           key={job.id}
-                          className={`border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors ${i === jobs.length - 1 ? "border-b-0" : ""}`}
+                          className={`border-b border-subtle/50 hover:bg-surface-1 transition-colors ${i === jobs.length - 1 ? "border-b-0" : ""}`}
                         >
                           <td className="px-5 py-4 max-w-[220px]">
-                            <p className="text-white font-medium text-sm truncate">{job.title}</p>
+                            <p className="text-foreground font-medium text-sm truncate">{job.title}</p>
                           </td>
-                          <td className="px-5 py-4 text-gray-400 text-sm">{job.location ?? "—"}</td>
-                          <td className="px-5 py-4 text-gray-400 text-sm">{job.experienceLevel ?? "—"}</td>
+                          <td className="px-5 py-4 text-muted-foreground text-sm">{job.location ?? "—"}</td>
+                          <td className="px-5 py-4 text-muted-foreground text-sm">{job.experienceLevel ?? "—"}</td>
                           <td className="px-5 py-4">
                             {cfg ? (
                               <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold ${cfg.color}`}>
@@ -253,12 +253,12 @@ export default function DashboardPage() {
                               <Badge variant="secondary">{job.status}</Badge>
                             )}
                           </td>
-                          <td className="px-5 py-4 text-gray-300 text-sm font-medium">{job.totalCandidatesFound}</td>
-                          <td className="px-5 py-4 text-gray-500 text-sm">{new Date(job.createdAt).toLocaleDateString()}</td>
+                          <td className="px-5 py-4 text-foreground/80 text-sm font-medium">{job.totalCandidatesFound}</td>
+                          <td className="px-5 py-4 text-muted-foreground text-sm">{new Date(job.createdAt).toLocaleDateString()}</td>
                           <td className="px-5 py-4">
                             <Link
                               href={`/dashboard/jobs/${job.id}`}
-                              className="px-3 py-1.5 text-xs font-semibold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg transition-all"
+                              className="px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground bg-surface-1 hover:bg-surface-2 border border-subtle rounded-lg transition-all"
                             >
                               View
                             </Link>
@@ -271,22 +271,22 @@ export default function DashboardPage() {
               </div>
 
               {pagination && pagination.totalPages > 1 && (
-                <div className="flex items-center justify-between px-5 py-4 border-t border-white/[0.06]">
-                  <span className="text-xs text-gray-500">
+                <div className="flex items-center justify-between px-5 py-4 border-t border-subtle">
+                  <span className="text-xs text-muted-foreground">
                     Page {pagination.page} of {pagination.totalPages} · {pagination.total} total
                   </span>
                   <div className="flex gap-2">
                     <button
                       disabled={page === 1}
                       onClick={() => setPage((p) => p - 1)}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                      className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-surface-1 hover:bg-surface-2 border border-subtle rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                       ← Prev
                     </button>
                     <button
                       disabled={page === pagination.totalPages}
                       onClick={() => setPage((p) => p + 1)}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/[0.08] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                      className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-surface-1 hover:bg-surface-2 border border-subtle rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                       Next →
                     </button>
