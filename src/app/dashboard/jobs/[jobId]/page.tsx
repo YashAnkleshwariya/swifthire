@@ -211,7 +211,7 @@ function scoreColor(score: number): string {
 
 function ProgressBar({ progress }: { progress: number }) {
   return (
-    <div className="w-full bg-white/10 rounded-full h-3">
+    <div className="w-full bg-muted rounded-full h-3">
       <div
         className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
         style={{ width: `${progress}%` }}
@@ -384,7 +384,7 @@ export default function JobDetailPage() {
     className?: string;
   }) => (
     <TableHead
-      className={`cursor-pointer select-none hover:bg-white/5 ${className ?? ""}`}
+      className={`cursor-pointer select-none hover:bg-surface-1 ${className ?? ""}`}
       onClick={() => handleSort(sortId)}
     >
       {label} {sortKey === sortId ? (sortAsc ? "↑" : "↓") : ""}
@@ -442,7 +442,7 @@ export default function JobDetailPage() {
                 Generated Search Query:
               </p>
               <div className="flex items-start gap-2">
-                <p className="text-sm bg-white/[0.06] p-3 rounded-md font-mono flex-1 text-gray-300">
+                <p className="text-sm bg-surface-2 p-3 rounded-md font-mono flex-1 text-muted-foreground">
                   {job.searchQuery}
                 </p>
                 <Button
@@ -600,7 +600,7 @@ function CandidateDetailDialog({
               href={candidate.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
+              className="inline-flex items-center gap-2 text-blue-600 hover:underline text-sm font-medium"
             >
               Open LinkedIn Profile →
             </a>
