@@ -92,14 +92,14 @@ export function Sidebar({
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-72 min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex flex-col shadow-2xl border-r border-gray-700",
+          "fixed inset-y-0 left-0 z-50 w-72 min-h-screen bg-card flex flex-col shadow-2xl border-r border-border",
           "transition-transform duration-300 md:transition-none",
           "md:static md:inset-auto md:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
         {/* Logo Section */}
-        <div className="p-6 border-b border-gray-700">
+        <div className="p-6 border-b border-border">
           <ShiftHireLogo size="sm" />
           <p className="text-xs text-gray-500 mt-1 ml-[44px]">AI Recruitment Tool</p>
         </div>
@@ -121,7 +121,7 @@ export function Sidebar({
                   "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-200 group border-l-2",
                   isActive
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 border-transparent"
-                    : "text-gray-300 hover:bg-gray-700/50 hover:text-white border-transparent hover:border-blue-500"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground border-transparent hover:border-blue-500"
                 )}
               >
                 <span className={cn(
@@ -137,7 +137,7 @@ export function Sidebar({
         </nav>
 
         {/* Bottom Section */}
-        <div className="p-4 border-t border-gray-700 space-y-3">
+        <div className="p-4 border-t border-border space-y-3">
           {/* Credits Card */}
           <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-2">
@@ -158,7 +158,7 @@ export function Sidebar({
           </div>
 
           {/* User Info */}
-          <div className="flex items-center gap-3 px-3 py-2.5 bg-gray-800/50 rounded-lg">
+          <div className="flex items-center gap-3 px-3 py-2.5 bg-muted/50 rounded-lg">
             <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg flex-shrink-0">
               {userName?.charAt(0)?.toUpperCase() ?? "U"}
             </div>
@@ -178,7 +178,7 @@ export function Sidebar({
           <div className="flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors duration-200 flex-1 min-w-0"
+              className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors duration-200 flex-1 min-w-0"
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDark ? (
@@ -195,7 +195,7 @@ export function Sidebar({
 
             <button
               onClick={handleLogout}
-              className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-900/20 rounded-lg transition-colors duration-200 flex-shrink-0"
+              className="p-2 text-muted-foreground hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors duration-200 flex-shrink-0"
               title="Sign out"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
