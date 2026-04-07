@@ -34,59 +34,206 @@
 
   --radius: 0.5rem;
 
-  /* Subtle surface overlays (light: dark-on-white) */
   --surface-1: rgba(0, 0, 0, 0.03);
   --surface-2: rgba(0, 0, 0, 0.05);
   --border-subtle: rgba(0, 0, 0, 0.07);
 }
 
-/* Dark theme */
+/* Dark theme — Deep Space Terminal */
 .dark {
-  --background: #080b14;
-  --foreground: #f1f5f9;
+  --background: #060910;
+  --foreground: #e2e8f0;
 
-  --popover: #0f172a;
-  --popover-foreground: #f1f5f9;
+  --popover: #0d1117;
+  --popover-foreground: #e2e8f0;
 
-  --card: #0f172a;
-  --card-foreground: #f1f5f9;
+  --card: #0d1117;
+  --card-foreground: #e2e8f0;
 
   --primary: #3b82f6;
   --primary-foreground: #ffffff;
 
-  --secondary: #1e293b;
-  --secondary-foreground: #f1f5f9;
+  --secondary: #161b27;
+  --secondary-foreground: #e2e8f0;
 
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
+  --muted: #161b27;
+  --muted-foreground: #64748b;
 
-  --accent: #1e293b;
-  --accent-foreground: #f1f5f9;
+  --accent: #161b27;
+  --accent-foreground: #e2e8f0;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.06);
+  --input: rgba(255, 255, 255, 0.06);
   --ring: #3b82f6;
 
-  /* Subtle surface overlays (dark: light-on-black) */
-  --surface-1: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.05);
-  --border-subtle: rgba(255, 255, 255, 0.07);
+  --surface-1: rgba(255, 255, 255, 0.025);
+  --surface-2: rgba(255, 255, 255, 0.045);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  /* Terminal-specific tokens */
+  --glow-blue: rgba(59, 130, 246, 0.18);
+  --glow-blue-sm: rgba(59, 130, 246, 0.12);
+  --accent-line: rgba(59, 130, 246, 0.25);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Monospace data font for numbers, codes, IDs */
+.font-data {
+  font-family: var(--font-data), var(--font-geist-mono), monospace;
+}
+
+/* ─── Animations ─────────────────────────────────────────── */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1);   opacity: 0.35; }
+  50%       { transform: scale(1.15); opacity: 0.08; }
+}
+
+@keyframes scanLine {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(59, 130, 246, 0.2); }
+  50%       { border-color: rgba(59, 130, 246, 0.5); }
+}
+
+.animate-fade-up   { animation: fadeUp     0.45s ease forwards; opacity: 0; }
+.animate-fade-in   { animation: fadeIn     0.4s  ease forwards; opacity: 0; }
+.animate-slide-in  { animation: slideInLeft 0.35s ease forwards; opacity: 0; }
+.animate-spin-slow { animation: spin-slow 8s linear infinite; }
+
+/* Staggered delays for list items */
+.delay-0  { animation-delay: 0ms; }
+.delay-50 { animation-delay: 50ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* ─── Dark-mode design utilities ────────────────────────── */
+
+/* Dot-grid page background */
+.dark .bg-dot-grid {
+  background-image: radial-gradient(circle, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Glass morphism card */
+.dark .glass-card {
+  background: rgba(13, 17, 23, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+/* Blue glow shadow for cards */
+.dark .glow-card {
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 0.08),
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(59, 130, 246, 0.04);
+}
+
+/* Luminous card border hover */
+.dark .card-hover:hover {
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(59, 130, 246, 0.06);
+  transition: all 0.2s ease;
+}
+
+/* Left accent bar for table rows */
+.dark .row-accent {
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.dark .row-accent:hover {
+  border-left-color: rgba(59, 130, 246, 0.5);
+  background-color: rgba(59, 130, 246, 0.03);
+}
+
+/* Status dot glow */
+.dark .dot-emerald { box-shadow: 0 0 6px 1px rgba(52, 211, 153, 0.5); }
+.dark .dot-blue    { box-shadow: 0 0 6px 1px rgba(96, 165, 250, 0.5); }
+.dark .dot-amber   { box-shadow: 0 0 6px 1px rgba(251, 191, 36, 0.4); }
+.dark .dot-red     { box-shadow: 0 0 6px 1px rgba(248, 113, 113, 0.4); }
+
+/* Input glow on focus */
+.dark .input-glow:focus {
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 0 20px rgba(59, 130, 246, 0.08);
+  outline: none;
+}
+
+/* Scan line effect (decorative) */
+.scan-container {
+  position: relative;
+  overflow: hidden;
+}
+.dark .scan-container::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+  animation: scanLine 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Processing pulse rings */
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  animation: pulseRing 2.2s ease-in-out infinite;
+}
+.pulse-ring-2 {
+  animation-delay: 0.7s;
+  border-color: rgba(99, 102, 241, 0.25);
+}
+.pulse-ring-3 {
+  animation-delay: 1.4s;
+  border-color: rgba(59, 130, 246, 0.15);
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  /* Semantic surface utilities that invert between light/dark */
+  .text-balance { text-wrap: balance; }
   .bg-surface-1 { background-color: var(--surface-1); }
   .bg-surface-2 { background-color: var(--surface-2); }
   .border-subtle { border-color: var(--border-subtle); }

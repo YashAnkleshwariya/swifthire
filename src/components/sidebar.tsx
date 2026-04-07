@@ -118,10 +118,10 @@ export function Sidebar({
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-200 group border-l-2",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group border-l-2",
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 border-transparent"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground border-transparent hover:border-blue-500"
+                    ? "bg-gradient-to-r from-blue-600/20 to-purple-600/10 text-blue-400 border-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.15)]"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground border-transparent hover:border-blue-500/40"
                 )}
               >
                 <span className={cn(
@@ -130,7 +130,10 @@ export function Sidebar({
                 )}>
                   {iconMap[item.icon]}
                 </span>
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {isActive && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_6px_rgba(59,130,246,0.8)] flex-shrink-0" />
+                )}
               </Link>
             );
           })}
@@ -145,7 +148,7 @@ export function Sidebar({
                 <span>⚡</span>
                 Credits
               </span>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="text-xl font-black font-data bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent tabular-nums">
                 {credits ?? "..."}
               </span>
             </div>

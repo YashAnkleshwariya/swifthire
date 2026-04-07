@@ -101,11 +101,16 @@ function ProcessingScreen({
     : 0;
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background bg-dot-grid flex items-center justify-center p-6">
       <div className="w-full max-w-md space-y-8">
-        {/* Spinner */}
+        {/* Spinner with pulse rings */}
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin" />
+          <div className="relative w-20 h-20 flex items-center justify-center">
+            <div className="pulse-ring" />
+            <div className="pulse-ring pulse-ring-2" />
+            <div className="pulse-ring pulse-ring-3" />
+            <div className="w-14 h-14 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin relative z-10" />
+          </div>
           <div className="text-center">
             <h2 className="text-xl font-bold text-foreground">{jobTitle}</h2>
             <p className="text-sm text-muted-foreground mt-1">Processing your job match…</p>
@@ -144,7 +149,7 @@ function ProcessingScreen({
                   {stepLabels[step] ?? step.replace(/_/g, " ")}
                 </span>
                 {isCurrent && (
-                  <span className="ml-auto text-xs font-bold text-blue-400">{progress}%</span>
+                  <span className="ml-auto text-xs font-bold font-data tabular-nums text-blue-400">{progress}%</span>
                 )}
               </div>
             );
@@ -159,7 +164,7 @@ function ProcessingScreen({
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-xs text-center text-muted-foreground">{progress}% complete</p>
+          <p className="text-xs text-center text-muted-foreground font-data tabular-nums">{progress}% complete</p>
         </div>
       </div>
     </div>
@@ -380,7 +385,7 @@ export default function JobDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background bg-dot-grid p-6">
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
         <div className="mb-6">
@@ -507,7 +512,7 @@ export default function JobDetailPage() {
                         key={c.id}
                         className="hover:bg-surface-1 transition-colors"
                       >
-                        <TableCell className="font-bold text-muted-foreground">
+                        <TableCell className="font-bold font-data text-muted-foreground tabular-nums">
                           {c.rank ?? "-"}
                         </TableCell>
                         <TableCell>
@@ -515,9 +520,12 @@ export default function JobDetailPage() {
                             href={c.linkedinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline font-medium"
+                            className="flex items-center gap-2.5 text-blue-400 hover:text-blue-300 font-medium transition-colors group"
                           >
-                            {c.name}
+                            <span className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-600/30 to-purple-600/30 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-300 flex-shrink-0">
+                              {c.name.charAt(0).toUpperCase()}
+                            </span>
+                            <span className="group-hover:underline">{c.name}</span>
                           </a>
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
@@ -527,7 +535,7 @@ export default function JobDetailPage() {
                           {c.location ?? "-"}
                         </TableCell>
                         <TableCell className="text-center">
-                          <Badge className={scoreGradient(c.evaluation?.matchScore ?? 0)}>
+                          <Badge className={`${scoreGradient(c.evaluation?.matchScore ?? 0)} font-data tabular-nums`}>
                             {c.evaluation?.matchScore ?? "-"}%
                           </Badge>
                         </TableCell>
@@ -599,7 +607,7 @@ function CandidateDetailDialog({
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 p-3 bg-surface-1 rounded-lg flex-1">
                   <span className="text-sm text-muted-foreground">Match Score</span>
-                  <span className={`font-bold text-lg ${scoreColor(eval_.matchScore)}`}>
+                  <span className={`font-bold text-lg font-data tabular-nums ${scoreColor(eval_.matchScore)}`}>
                     {eval_.matchScore}%
                   </span>
                 </div>

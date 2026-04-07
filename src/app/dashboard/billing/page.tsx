@@ -110,7 +110,7 @@ export default function BillingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-5 sm:p-8">
+    <div className="min-h-screen bg-background bg-dot-grid p-5 sm:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Page Header */}
         <div className="mb-10">
@@ -123,12 +123,12 @@ export default function BillingPage() {
         </div>
 
         {/* Current Balance Card — styled like a stat card */}
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 mb-10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] text-white overflow-hidden relative">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 mb-10 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] text-white overflow-hidden relative glow-card scan-container">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16" />
           <div className="relative z-10">
             <p className="text-blue-100 font-medium text-sm mb-1">Current Balance</p>
             <div className="flex items-baseline gap-3 mb-1">
-              <span className="text-6xl font-bold">{user?.credits ?? "..."}</span>
+              <span className="text-6xl font-bold font-data tabular-nums">{user?.credits ?? "..."}</span>
               <span className="text-blue-100 text-lg">credits</span>
             </div>
             <p className="text-blue-100 text-sm flex items-center gap-1.5">
@@ -146,8 +146,8 @@ export default function BillingPage() {
               key={plan.id}
               className={
                 plan.popular
-                  ? "border-2 border-blue-500/40 shadow-xl shadow-blue-500/10 relative bg-blue-500/[0.06]"
-                  : "border border-subtle shadow-xl bg-surface-1 relative"
+                  ? "border-2 border-blue-500/40 shadow-xl shadow-blue-500/10 relative bg-blue-500/[0.06] glow-card"
+                  : "border border-subtle shadow-xl bg-surface-1 relative card-hover"
               }
             >
               {plan.popular && (
@@ -158,7 +158,7 @@ export default function BillingPage() {
               <CardHeader className="pb-4">
                 <CardTitle className="text-xl">{plan.name}</CardTitle>
                 <CardDescription>
-                  <span className="text-4xl font-bold text-foreground">
+                  <span className="text-4xl font-bold font-data text-foreground tabular-nums">
                     ${plan.price}
                   </span>
                   {plan.price > 0 && (

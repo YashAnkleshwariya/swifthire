@@ -69,7 +69,7 @@ export default function NewJobPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-5 sm:p-8">
+    <div className="min-h-screen bg-background bg-dot-grid p-5 sm:p-8">
       <div className="max-w-3xl mx-auto">
 
         {/* Header */}
@@ -105,7 +105,7 @@ export default function NewJobPage() {
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden">
+        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden scan-container glow-card">
           <div className="px-6 py-5 border-b border-subtle">
             <h2 className="text-base font-bold text-foreground">Job Details</h2>
             <p className="text-muted-foreground text-xs mt-0.5">Fill in the details below to start matching</p>
@@ -124,7 +124,7 @@ export default function NewJobPage() {
                 required
                 minLength={50}
                 rows={12}
-                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 resize-y transition-all"
+                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm resize-y transition-all input-glow"
               />
               <p className="text-xs text-muted-foreground">{form.description.length} / 10,000 characters (min 50)</p>
             </div>
@@ -137,7 +137,7 @@ export default function NewJobPage() {
                 placeholder="e.g. London, UK or Remote — EMEA"
                 value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
-                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                className="w-full bg-surface-2 border border-subtle text-foreground placeholder-muted-foreground rounded-xl px-4 py-3 text-sm transition-all input-glow"
               />
             </div>
 

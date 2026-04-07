@@ -84,7 +84,7 @@ export default function DashboardPage() {
   }, [jobs, fetchData]);
 
   return (
-    <div className="min-h-screen bg-background p-5 sm:p-8">
+    <div className="min-h-screen bg-background bg-dot-grid p-5 sm:p-8">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
@@ -147,7 +147,7 @@ export default function DashboardPage() {
               ),
             },
           ].map((card) => (
-            <div key={card.label} className={`relative rounded-2xl bg-gradient-to-br ${card.gradient} p-5 shadow-xl ${card.glow} overflow-hidden`}>
+            <div key={card.label} className={`relative rounded-2xl bg-gradient-to-br ${card.gradient} p-5 shadow-xl ${card.glow} overflow-hidden glow-card`}>
               <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full -mr-10 -mt-10 pointer-events-none" />
               <div className="relative flex items-start justify-between mb-4">
                 <p className="text-white/70 text-xs font-semibold uppercase tracking-wider">{card.label}</p>
@@ -155,14 +155,14 @@ export default function DashboardPage() {
                   {card.icon}
                 </div>
               </div>
-              <p className="text-4xl font-black text-white mb-1 relative">{card.value}</p>
+              <p className="text-4xl font-black font-data text-white mb-1 relative tabular-nums">{card.value}</p>
               <p className="text-white/60 text-xs relative">{card.sub}</p>
             </div>
           ))}
         </div>
 
         {/* Jobs Table */}
-        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden">
+        <div className="rounded-2xl bg-surface-1 border border-subtle overflow-hidden card-hover glow-card">
           {/* Table header */}
           <div className="px-6 py-5 border-b border-subtle flex flex-col gap-4">
             <div className="flex items-center justify-between">
@@ -236,7 +236,7 @@ export default function DashboardPage() {
                       return (
                         <tr
                           key={job.id}
-                          className={`border-b border-subtle/50 hover:bg-surface-1 transition-colors ${i === jobs.length - 1 ? "border-b-0" : ""}`}
+                          className={`border-b border-subtle/50 row-accent transition-colors ${i === jobs.length - 1 ? "border-b-0" : ""}`}
                         >
                           <td className="px-5 py-4 max-w-[220px]">
                             <p className="text-foreground font-medium text-sm truncate">{job.title}</p>
@@ -253,7 +253,7 @@ export default function DashboardPage() {
                               <Badge variant="secondary">{job.status}</Badge>
                             )}
                           </td>
-                          <td className="px-5 py-4 text-foreground/80 text-sm font-medium">{job.totalCandidatesFound}</td>
+                          <td className="px-5 py-4 text-foreground/80 text-sm font-medium font-data tabular-nums">{job.totalCandidatesFound}</td>
                           <td className="px-5 py-4 text-muted-foreground text-sm">{new Date(job.createdAt).toLocaleDateString()}</td>
                           <td className="px-5 py-4">
                             <Link
