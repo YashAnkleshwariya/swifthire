@@ -32,7 +32,7 @@ export async function GET() {
         .limit(10),
       admin
         .from("User")
-        .select("id, email, name, credits, createdAt")
+        .select("id, email, name, credits, createdAt, jobs:Job(count)")
         .order("createdAt", { ascending: false })
         .limit(10),
       admin.from("Evaluation").select("matchScore"),
@@ -54,7 +54,14 @@ export async function GET() {
         totalCandidates: totalCandidates ?? 0,
         avgMatchScore,
         recentJobs: recentJobs ?? [],
-        recentUsers: recentUsers ?? [],
+        recentUsers: (recentUsers ?? []).map((u: any) => ({
+          id: u.id,
+          email: u.email,
+          name: u.name,
+          credits: u.credits,
+          createdAt: u.createdAt,
+          _count: { jobs: u.jobs?.[0]?.count ?? 0 },
+        })),
       },
     });
   } catch (error) {

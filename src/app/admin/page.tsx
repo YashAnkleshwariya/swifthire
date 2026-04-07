@@ -344,7 +344,7 @@ export default function AdminPage() {
                           {user.email}
                         </p>
                         <p className="text-[10px] text-slate-500">
-                          {user._count.jobs} job{user._count.jobs !== 1 ? "s" : ""}
+                          {user._count?.jobs ?? 0} job{(user._count?.jobs ?? 0) !== 1 ? "s" : ""}
                         </p>
                       </div>
                     </div>
