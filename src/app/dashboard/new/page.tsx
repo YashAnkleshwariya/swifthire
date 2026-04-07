@@ -145,10 +145,10 @@ export default function NewJobPage() {
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-foreground">Experience Level</label>
               <Select value={form.experienceLevel} onValueChange={(val) => setForm({ ...form, experienceLevel: val })}>
-                <SelectTrigger className="bg-white/[0.04] border-white/[0.08] text-white focus:ring-blue-500/50 rounded-xl">
+                <SelectTrigger className="bg-surface-2 border-subtle text-foreground focus:ring-blue-500/50 rounded-xl">
                   <SelectValue placeholder="Select experience level" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-white/10">
+                <SelectContent className="bg-popover border-border">
                   <SelectItem value="Entry">Entry Level</SelectItem>
                   <SelectItem value="Mid">Mid Level</SelectItem>
                   <SelectItem value="Senior">Senior Level</SelectItem>
