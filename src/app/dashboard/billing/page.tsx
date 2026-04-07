@@ -147,7 +147,7 @@ export default function BillingPage() {
               className={
                 plan.popular
                   ? "border-2 border-blue-500/40 shadow-xl shadow-blue-500/10 relative bg-blue-500/[0.06]"
-                  : "border border-white/[0.07] shadow-xl bg-white/[0.03] relative"
+                  : "border border-subtle shadow-xl bg-surface-1 relative"
               }
             >
               {plan.popular && (
@@ -210,7 +210,7 @@ export default function BillingPage() {
 
         {/* Buy Additional Credits */}
         <h2 className="text-xl font-bold text-foreground mb-5">One-Time Credits</h2>
-        <Card className="border border-white/[0.07] shadow-xl bg-white/[0.03]">
+        <Card className="border border-subtle shadow-xl bg-surface-1">
           <CardHeader>
             <CardTitle>Buy Additional Credits</CardTitle>
             <CardDescription>

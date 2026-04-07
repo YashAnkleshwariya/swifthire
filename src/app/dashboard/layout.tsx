@@ -28,7 +28,7 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-[#080b14]">
+    <div className="flex min-h-screen bg-background">
       <Sidebar
         credits={user?.credits}
         userName={user?.name ?? undefined}
@@ -39,10 +39,10 @@ export default function DashboardLayout({
 
       <main className="flex-1 overflow-auto min-w-0">
         {/* Mobile top bar — visible only on small screens */}
-        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-[#080b14]/95 backdrop-blur-sm border-b border-white/[0.06] sticky top-0 z-30">
+        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-background/95 backdrop-blur-sm border-b border-subtle sticky top-0 z-30">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors"
+            className="p-2 rounded-lg text-muted-foreground hover:bg-surface-1 transition-colors"
             aria-label="Open navigation menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
