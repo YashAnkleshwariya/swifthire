@@ -424,7 +424,7 @@ export default function JobDetailPage() {
           {job.searchQuery && isAdmin && (
             <CardContent>
               <p className="text-sm text-muted-foreground mb-1 flex items-center gap-2">
-                <span className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded">
+                <span className="bg-red-500/10 text-red-500 text-xs font-semibold px-2 py-0.5 rounded">
                   Admin only
                 </span>
                 Generated Search Query:
@@ -535,10 +535,10 @@ export default function JobDetailPage() {
                           {c.evaluation?.matchBand && (
                             <Badge variant="secondary" className={
                               c.evaluation.matchBand === "above_70"
-                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                                ? "bg-green-500/10 text-green-500"
                                 : c.evaluation.matchBand === "50_to_70"
-                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+                                ? "bg-yellow-500/10 text-yellow-500"
+                                : "bg-red-500/10 text-red-500"
                             }>
                               {c.evaluation.matchBand.replace("_", " ")}
                             </Badge>
@@ -605,10 +605,10 @@ function CandidateDetailDialog({
                 </div>
                 <Badge variant="secondary" className={
                   eval_.matchBand === "above_70"
-                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 px-3 py-1"
+                    ? "bg-green-500/10 text-green-500 px-3 py-1"
                     : eval_.matchBand === "50_to_70"
-                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 px-3 py-1"
-                    : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 px-3 py-1"
+                    ? "bg-yellow-500/10 text-yellow-500 px-3 py-1"
+                    : "bg-red-500/10 text-red-500 px-3 py-1"
                 }>
                   {eval_.matchBand.replace("_", " ")}
                 </Badge>
