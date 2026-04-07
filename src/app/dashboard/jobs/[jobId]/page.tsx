@@ -77,6 +77,125 @@ const jobStatusColors: Record<string, string> = {
   PENDING: "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md",
 };
 
+const PIPELINE_STEPS = [
+  "WAITING",
+  "GENERATING_QUERY",
+  "SEARCHING_LINKEDIN",
+  "SAVING_CANDIDATES",
+  "EVALUATING_CANDIDATES",
+  "RANKING_RESULTS",
+  "DONE",
+] as const;
+
+function ProcessingScreen({
+  jobTitle,
+  currentStep,
+  progress,
+}: {
+  jobTitle: string;
+  currentStep: string | null;
+  progress: number;
+}) {
+  const currentIdx = currentStep
+    ? PIPELINE_STEPS.indexOf(currentStep as typeof PIPELINE_STEPS[number])
+    : 0;
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-md space-y-8">
+        {/* Spinner */}
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin" />
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-foreground">{jobTitle}</h2>
+            <p className="text-sm text-muted-foreground mt-1">Processing your job match…</p>
+          </div>
+        </div>
+
+        {/* Step List */}
+        <div className="space-y-2">
+          {PIPELINE_STEPS.filter((s) => s !== "DONE").map((step, idx) => {
+            const isDone = idx < currentIdx;
+            const isCurrent = idx === currentIdx;
+
+            return (
+              <div
+                key={step}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                  isCurrent
+                    ? "bg-blue-500/10 border border-blue-500/20"
+                    : isDone
+                    ? "opacity-60"
+                    : "opacity-30"
+                }`}
+              >
+                {isDone ? (
+                  <span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                ) : isCurrent ? (
+                  <span className="w-5 h-5 rounded-full bg-blue-500 animate-pulse flex-shrink-0" />
+                ) : (
+                  <span className="w-5 h-5 rounded-full border-2 border-muted-foreground/30 flex-shrink-0" />
+                )}
+                <span className={`text-sm font-medium ${isCurrent ? "text-blue-400" : "text-foreground"}`}>
+                  {stepLabels[step] ?? step.replace(/_/g, " ")}
+                </span>
+                {isCurrent && (
+                  <span className="ml-auto text-xs font-bold text-blue-400">{progress}%</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="space-y-1.5">
+          <div className="w-full bg-muted rounded-full h-2">
+            <div
+              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="text-xs text-center text-muted-foreground">{progress}% complete</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FailedScreen({
+  error,
+  onBack,
+}: {
+  error: string | null;
+  onBack: () => void;
+}) {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-sm text-center space-y-4">
+        <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto">
+          <svg className="w-7 h-7 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-foreground">Job Processing Failed</h2>
+          {error && <p className="text-sm text-muted-foreground mt-2">{error}</p>}
+        </div>
+        <button
+          onClick={onBack}
+          className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity"
+        >
+          ← Back to Dashboard
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function scoreGradient(score: number): string {
   if (score >= 80) return "bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-sm";
   if (score >= 60) return "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-sm";
@@ -213,12 +332,13 @@ export default function JobDetailPage() {
     URL.revokeObjectURL(url);
   }
 
+  // Loading state
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-12 min-h-screen bg-[#080b14]">
+      <div className="flex items-center justify-center p-12 min-h-screen bg-background">
         <div className="text-center space-y-3">
           <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-gray-500">Loading job details...</p>
+          <p className="text-muted-foreground">Loading job details...</p>
         </div>
       </div>
     );
@@ -226,12 +346,34 @@ export default function JobDetailPage() {
 
   if (!job) {
     return (
-      <div className="flex items-center justify-center p-12 min-h-screen bg-[#080b14]">
-        <p className="text-gray-500">Job not found</p>
+      <div className="flex items-center justify-center p-12 min-h-screen bg-background">
+        <p className="text-muted-foreground">Job not found</p>
       </div>
     );
   }
 
+  // Processing state — full-screen only
+  if (progress.isProcessing || job.status === "PENDING") {
+    return (
+      <ProcessingScreen
+        jobTitle={job.title}
+        currentStep={progress.currentStep}
+        progress={progress.progress}
+      />
+    );
+  }
+
+  // Failed state
+  if (progress.isFailed) {
+    return (
+      <FailedScreen
+        error={progress.error}
+        onBack={() => router.push("/dashboard")}
+      />
+    );
+  }
+
+  // Results state
   const SortHeader = ({
     label,
     sortId,
@@ -250,14 +392,14 @@ export default function JobDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#080b14] p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
         <div className="mb-6">
           <Button
             variant="ghost"
             onClick={() => router.push("/dashboard")}
-            className="text-gray-400 hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
           >
             ← Back to Dashboard
           </Button>
@@ -268,13 +410,13 @@ export default function JobDetailPage() {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {job.title}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-muted-foreground mt-1">
             {job.location ?? "No location"} · Created {new Date(job.createdAt).toLocaleDateString()}
           </p>
         </div>
 
         {/* Job Summary Card */}
-        <Card className="mb-6 border-0 shadow-xl bg-white/[0.04] border border-white/[0.07]">
+        <Card className="mb-6 border-0 shadow-xl bg-surface-1 border border-subtle">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>
@@ -293,7 +435,7 @@ export default function JobDetailPage() {
           </CardHeader>
           {job.searchQuery && isAdmin && (
             <CardContent>
-              <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+              <p className="text-sm text-muted-foreground mb-1 flex items-center gap-2">
                 <span className="bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold px-2 py-0.5 rounded">
                   Admin only
                 </span>
@@ -317,49 +459,13 @@ export default function JobDetailPage() {
           )}
         </Card>
 
-        {/* Processing Progress — with prominent step label */}
-        {progress.isProcessing && (
-          <Card className="mb-6 border-0 shadow-xl bg-white/[0.04] border border-white/[0.07]">
-            <CardHeader>
-              <CardTitle className="text-lg">Processing</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {/* Prominent step display */}
-              {progress.currentStep && (
-                <div className="flex items-center gap-3 bg-blue-500/10 rounded-xl px-4 py-3 border border-blue-500/20">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse flex-shrink-0" />
-                  <span className="text-sm font-semibold text-blue-800 dark:text-blue-300 flex-1">
-                    {stepLabels[progress.currentStep] ??
-                      progress.currentStep.replace(/_/g, " ")}
-                  </span>
-                  <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
-                    {progress.progress}%
-                  </span>
-                </div>
-              )}
-              <ProgressBar progress={progress.progress} />
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Error */}
-        {progress.isFailed && progress.error && (
-          <Card className="mb-6 border-red-200 dark:border-red-800 bg-red-50/80 dark:bg-red-900/20 backdrop-blur-sm">
-            <CardContent className="pt-6">
-              <p className="text-red-600 dark:text-red-400 text-sm">
-                ❌ Error: {progress.error}
-              </p>
-            </CardContent>
-          </Card>
-        )}
-
         {/* Results Table */}
         {candidates.length > 0 && (
-          <Card className="border-0 shadow-2xl bg-white/[0.04] border border-white/[0.07]">
-            <CardHeader className="border-b border-white/[0.07] bg-white/[0.02]">
+          <Card className="border-0 shadow-2xl bg-surface-1 border border-subtle">
+            <CardHeader className="border-b border-subtle bg-surface-1">
               <div className="flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <CardTitle className="text-xl font-bold text-white">
+                  <CardTitle className="text-xl font-bold text-foreground">
                     🏆 Ranked Candidates ({sortedCandidates.length}
                     {minMatch > 0 ? ` of ${candidates.length}` : ""})
                   </CardTitle>
@@ -369,7 +475,7 @@ export default function JobDetailPage() {
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <label className="text-sm text-gray-400 whitespace-nowrap">
+                    <label className="text-sm text-muted-foreground whitespace-nowrap">
                       Min match:
                     </label>
                     <Input
@@ -380,7 +486,7 @@ export default function JobDetailPage() {
                       onChange={(e) => setMinMatch(Number(e.target.value) || 0)}
                       className="w-20"
                     />
-                    <span className="text-sm text-gray-400">%</span>
+                    <span className="text-sm text-muted-foreground">%</span>
                   </div>
                   <Button
                     variant="outline"
@@ -397,7 +503,7 @@ export default function JobDetailPage() {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-white/[0.03]">
+                    <TableRow className="bg-surface-1">
                       <SortHeader label="#" sortId="rank" className="w-12" />
                       <TableHead>Name</TableHead>
                       <TableHead>Title</TableHead>
@@ -411,9 +517,9 @@ export default function JobDetailPage() {
                     {sortedCandidates.map((c) => (
                       <TableRow
                         key={c.id}
-                        className="hover:bg-white/[0.03] transition-colors"
+                        className="hover:bg-surface-1 transition-colors"
                       >
-                        <TableCell className="font-bold text-gray-700 dark:text-gray-300">
+                        <TableCell className="font-bold text-muted-foreground">
                           {c.rank ?? "-"}
                         </TableCell>
                         <TableCell>
@@ -421,15 +527,15 @@ export default function JobDetailPage() {
                             href={c.linkedinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                            className="text-blue-600 hover:underline font-medium"
                           >
                             {c.name}
                           </a>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-400 max-w-[200px] truncate">
+                        <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
                           {c.profileTitle ?? "-"}
                         </TableCell>
-                        <TableCell className="text-sm text-gray-400">
+                        <TableCell className="text-sm text-muted-foreground">
                           {c.location ?? "-"}
                         </TableCell>
                         <TableCell className="text-center">
@@ -503,8 +609,8 @@ function CandidateDetailDialog({
           {eval_ && (
             <>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 p-3 bg-white/[0.06] rounded-lg flex-1">
-                  <span className="text-sm text-gray-400">Match Score</span>
+                <div className="flex items-center gap-2 p-3 bg-surface-1 rounded-lg flex-1">
+                  <span className="text-sm text-muted-foreground">Match Score</span>
                   <span className={`font-bold text-lg ${scoreColor(eval_.matchScore)}`}>
                     {eval_.matchScore}%
                   </span>
@@ -522,10 +628,10 @@ function CandidateDetailDialog({
 
               {eval_.whyMatched && eval_.whyMatched.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-2 text-white">Why Matched</h4>
+                  <h4 className="font-semibold mb-2 text-foreground">Why Matched</h4>
                   <ul className="space-y-1.5">
                     {eval_.whyMatched.map((reason, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                         <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
                         {reason}
                       </li>
@@ -538,8 +644,8 @@ function CandidateDetailDialog({
 
           {candidate.profileText && (
             <div>
-              <h4 className="font-semibold mb-2 text-white">Profile Text</h4>
-              <p className="text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto leading-relaxed">
+              <h4 className="font-semibold mb-2 text-foreground">Profile Text</h4>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap max-h-60 overflow-y-auto leading-relaxed">
                 {candidate.profileText}
               </p>
             </div>
