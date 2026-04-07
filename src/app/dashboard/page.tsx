@@ -199,7 +199,7 @@ export default function DashboardPage() {
             </div>
           ) : jobs.length === 0 ? (
             <div className="py-24 text-center space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 flex items-center justify-center mx-auto text-3xl">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-subtle flex items-center justify-center mx-auto text-3xl">
                 🎯
               </div>
               <h3 className="text-xl font-bold text-foreground">
