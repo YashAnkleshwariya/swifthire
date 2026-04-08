@@ -2,7 +2,7 @@
 
 **AI-powered candidate sourcing that turns a job description into a ranked LinkedIn shortlist in under 5 minutes.**
 
-ShiftHire automates the full recruitment sourcing pipeline — from reading your JD, generating precision search queries with Gemini AI, scanning live LinkedIn profiles via Exa, evaluating each candidate, and returning a scored, ranked shortlist with written reasoning. No LinkedIn Recruiter licence required.
+ShiftHire automates the full recruitment sourcing pipeline — from reading your JD, generating precision search queries with Gemini AI, scanning live LinkedIn profiles, evaluating each candidate, and returning a scored, ranked shortlist with written reasoning. No LinkedIn Recruiter licence required.
 
 ---
 
@@ -10,7 +10,6 @@ ShiftHire automates the full recruitment sourcing pipeline — from reading your
 
 - [Features](#features)
 - [How It Works](#how-it-works)
-- [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
@@ -33,7 +32,7 @@ ShiftHire automates the full recruitment sourcing pipeline — from reading your
 ## Features
 
 - **Gemini AI Query Generation** — reads your JD end-to-end and constructs semantic search queries that capture nuanced requirements beyond simple keyword matching.
-- **LinkedIn Deep Search** — scans millions of live LinkedIn profiles via Exa's semantic search engine, surfacing candidates who genuinely fit the role.
+- **LinkedIn Deep Search** — scans millions of live LinkedIn profiles using semantic matching, surfacing candidates who genuinely fit the role.
 - **Automated AI Evaluation** — every candidate is scored 0–100, assigned a match band (Strong / Good / Below), and given bullet-point reasoning. No black box.
 - **Real-Time Progress Tracking** — a live processing screen walks through each pipeline step as it runs: query generation → LinkedIn search → save → evaluate → rank.
 - **Up to 50 Candidates per Search** — configurable via a slider (5–50), at 10 credits per job match.
@@ -61,25 +60,6 @@ WAITING → GENERATING_QUERY → SEARCHING_LINKEDIN → SAVING_CANDIDATES
 ```
 
 Each step is tracked in real time with a progress percentage displayed on screen.
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Framework | [Next.js 14](https://nextjs.org/) (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS, Radix UI |
-| Database | PostgreSQL via [Prisma](https://www.prisma.io/) ORM |
-| Auth & DB hosting | [Supabase](https://supabase.com/) |
-| Async job queue | [Inngest](https://www.inngest.com/) |
-| AI model | [Google Gemini](https://ai.google.dev/) (`@google/generative-ai`) |
-| LinkedIn search | [Exa](https://exa.ai/) (`exa-js`) |
-| Payments | [DodoPayments](https://dodopayments.com/) (`dodopayments`) |
-| Validation | [Zod](https://zod.dev/) |
-| UI components | Radix UI (Dialog, Select, Slider, Toast, Label) |
-| Icons | Lucide React |
 
 ---
 
@@ -128,7 +108,6 @@ shifthire/
 │   │   ├── auth.ts                # Session/auth helpers
 │   │   ├── prisma.ts              # Prisma client singleton
 │   │   ├── gemini.ts              # Google Gemini client
-│   │   ├── exa.ts                 # Exa search client
 │   │   ├── utils.ts               # cn() and general utilities
 │   │   ├── errors.ts              # Typed error helpers
 │   │   ├── billing/credits.ts     # Credit deduction logic
@@ -136,7 +115,7 @@ shifthire/
 │   │   └── validations/job.ts     # Zod schema for job creation
 │   ├── services/
 │   │   ├── query-generator.ts     # Gemini: JD → search query
-│   │   ├── exa-search.ts          # Exa: query → LinkedIn profiles
+│   │   ├── linkedin-search.ts     # LinkedIn profile search service
 │   │   └── candidate-evaluator.ts # Gemini: profile + JD → score + reasoning
 │   ├── types/
 │   │   └── api.ts                 # Shared API response types
@@ -152,7 +131,7 @@ shifthire/
 
 - Node.js 18+
 - PostgreSQL database (or a Supabase project)
-- API keys for: Google Gemini, Exa, Supabase, Inngest, DodoPayments
+- API keys for: Google Gemini, Supabase, Inngest, DodoPayments
 
 ### Environment Variables
 
@@ -170,8 +149,8 @@ SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 # Google Gemini AI
 GEMINI_API_KEY="your-gemini-api-key"
 
-# Exa (LinkedIn search)
-EXA_API_KEY="your-exa-api-key"
+# LinkedIn search
+SEARCH_API_KEY="your-search-api-key"
 
 # Inngest (async job queue)
 INNGEST_EVENT_KEY="your-inngest-event-key"
@@ -349,7 +328,7 @@ Inngest Event Bus
 └── job/process event  → processJob function (runs server-side, outside request cycle)
     ├── Step 1: fetch-and-start        Mark PROCESSING in DB
     ├── Step 2: generate-query         Gemini AI → search string
-    ├── Step 3: search-linkedin        Exa API → raw LinkedIn profiles
+    ├── Step 3: search-linkedin        Search engine → LinkedIn profiles
     ├── Step 4: save-candidates        Insert candidates into DB
     ├── Step 5: evaluate-candidate-N   Gemini AI per candidate → score + reasoning
     └── Step 6: rank-and-complete      Sort by score, write ranks, mark COMPLETED
@@ -363,7 +342,7 @@ Progress updates are written to the `ProcessingJob` table after each step. The f
 |---|---|
 | `User` | Account, email, hashed password, credits, isAdmin |
 | `Job` | Job post — description, location, level, status, searchQuery |
-| `Candidate` | LinkedIn profile data — name, URL, title, location, exaScore |
+| `Candidate` | LinkedIn profile data — name, URL, title, location, relevance score |
 | `Evaluation` | AI result per candidate — matchScore, matchBand, whyMatched[] |
 | `ProcessingJob` | Real-time pipeline state — currentStep, progress %, timestamps |
 | `CreditTransaction` | Credit debit/credit ledger per user |
@@ -376,9 +355,9 @@ Progress updates are written to the `ProcessingJob` table after each step. The f
 
 Uses **Google Gemini** to read the full job description and synthesise an optimised natural-language search query. The generated query is stored on the `Job` record (visible to admins).
 
-### 2. LinkedIn Search (`src/services/exa-search.ts`)
+### 2. LinkedIn Profile Search (`src/services/linkedin-search.ts`)
 
-Uses **Exa's** semantic search to scan live LinkedIn profiles using the generated query. Returns candidates with name, URL, profile text, current title, location, and a relevance score.
+Runs the generated query against live LinkedIn profiles using semantic search. Returns candidates with name, URL, profile text, current title, location, and a relevance score.
 
 ### 3. Candidate Evaluation (`src/services/candidate-evaluator.ts`)
 
@@ -400,7 +379,7 @@ Candidates are sorted descending by `matchScore`. Their `rank` field is updated 
 - **Rate limiting & bot protection** — applied at the API layer to prevent brute-force attacks and abuse.
 - **HTTP security headers** — CSP, HSTS, X-Frame-Options, X-Content-Type-Options set on all responses.
 - **No candidate data retention** — profiles are fetched and stored only for the life of the job result. No long-term candidate database is built.
-- **No third-party data sharing** — LinkedIn profile data fetched via Exa is never sold or shared with third parties.
+- **No third-party data sharing** — LinkedIn profile data is never sold or shared with third parties.
 - **GDPR compliant** — anonymous-only analytics (Umami). Cookie consent banner on first visit. EU data residency.
 - **Admin-only endpoints** — `/api/admin/*` routes verify `isAdmin` flag before returning any data.
 
@@ -454,4 +433,4 @@ Contact [ankleshwariyayash@gmail.com](mailto:ankleshwariyayash@gmail.com) for li
 
 ---
 
-Built with Next.js · Gemini AI · Exa · Inngest · Supabase · Prisma
+Built with Next.js · Gemini AI · Inngest · Supabase · Prisma
