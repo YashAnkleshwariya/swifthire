@@ -93,21 +93,85 @@ const testimonials = [
   },
 ];
 
-const steps = [
+const howItWorksSteps = [
   {
-    num: "01",
-    title: "Write or paste your job description",
-    desc: "Paste any job description — from a rough internal brief to a fully formatted posting. Include role, requirements, seniority, and location for best results. ShiftHire handles the rest.",
+    gradient: "from-blue-500 to-cyan-500",
+    label: "Getting started",
+    title: "Create your account & sign in",
+    desc: "Sign up in under 30 seconds — no credit card required. You get 100 free credits on day one, enough for 10 full candidate searches right away.",
+    tip: "100 free credits included on signup",
+    tipColor: "blue",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    ),
   },
   {
-    num: "02",
-    title: "AI builds and runs your search",
-    desc: "ShiftHire analyses your description and generates an optimised search strategy. Our search engine scans millions of live LinkedIn profiles in real time — no manual querying needed.",
+    gradient: "from-violet-500 to-purple-600",
+    label: "Start sourcing",
+    title: "Click \"New Job\" to begin",
+    desc: "From your dashboard, hit the New Job button to open a fresh search. Each job search is independent — run as many as your credits allow, for any role, any location.",
+    tip: null,
+    tipColor: "violet",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+      </svg>
+    ),
   },
   {
-    num: "03",
-    title: "Review your ranked shortlist",
-    desc: "Each candidate is evaluated and scored by AI. Your shortlist is sorted by match quality. Click any candidate to see their LinkedIn profile, match score, and exactly why the AI ranked them.",
+    gradient: "from-pink-500 to-rose-500",
+    label: "Define the role",
+    title: "Paste your job description",
+    desc: "Drop in your full JD — responsibilities, required skills, tech stack, years of experience, whatever you have. The richer the detail, the sharper the match. One thing to skip: company details like name or branding.",
+    tip: "Skip company name & branding — focus on role details only",
+    tipColor: "rose",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
+  {
+    gradient: "from-amber-500 to-orange-500",
+    label: "Target your market",
+    title: "Set the exact location",
+    desc: "Enter a City and Country for the role — for example, \"Berlin, Germany\" or \"Dubai, UAE\". A precise location keeps your results geographically focused so you're not wading through profiles from the wrong market.",
+    tip: "Format: City, Country — e.g. \"London, UK\" or \"Mumbai, India\"",
+    tipColor: "amber",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ),
+  },
+  {
+    gradient: "from-emerald-500 to-teal-500",
+    label: "Filter seniority",
+    title: "Choose the experience level",
+    desc: "Pick from Junior, Mid-Level, Senior, or Lead — whatever fits the role. This filters your candidate pool to the right career stage so you're not comparing fresh grads to 10-year veterans.",
+    tip: "You can always run the same JD at different levels to compare pools",
+    tipColor: "emerald",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    ),
+  },
+  {
+    gradient: "from-indigo-500 to-blue-600",
+    label: "Launch",
+    title: "Submit and let AI do the work",
+    desc: "Hit Submit. ShiftHire hands your job off to the AI pipeline — query generation, LinkedIn search, profile evaluation, and scoring all run automatically. No manual work from you.",
+    tip: null,
+    tipColor: "indigo",
+    icon: (
+      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+      </svg>
+    ),
   },
 ];
 
@@ -307,30 +371,127 @@ export default function HomePage() {
       </section>
 
       {/* ── How it works ── */}
-      <section className="max-w-7xl mx-auto px-5 py-24" id="how-it-works">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400 text-xs font-semibold mb-5">
-            How it works
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Three steps to your shortlist</h2>
-          <p className="text-gray-400 max-w-lg mx-auto">From zero to ranked candidates — entirely automated, entirely in your browser.</p>
-        </div>
+      <section className="py-24 px-5 overflow-hidden" id="how-it-works">
+        <div className="max-w-4xl mx-auto">
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((s, i) => (
-            <div key={s.num} className="relative">
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-10 left-[calc(50%+48px)] right-0 h-px bg-gradient-to-r from-white/10 to-transparent" />
-              )}
-              <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-xl shadow-blue-600/20 mb-6">
-                  <span className="text-2xl font-black text-white">{s.num}</span>
+          {/* Header */}
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400 text-xs font-semibold mb-5">
+              How it works
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
+              From job description to{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                shortlist in minutes
+              </span>
+            </h2>
+            <p className="text-gray-400 max-w-lg mx-auto text-lg leading-relaxed">
+              Here's exactly how ShiftHire turns a job description into a ranked list of real candidates — step by step.
+            </p>
+          </div>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical connector line */}
+            <div className="absolute left-[27px] top-8 bottom-8 w-px bg-gradient-to-b from-blue-500/60 via-purple-500/40 via-pink-500/30 to-emerald-500/20" />
+
+            <div className="space-y-5">
+              {howItWorksSteps.map((step, i) => (
+                <div key={i} className="relative flex gap-5 group">
+                  {/* Step bubble */}
+                  <div className="relative z-10 flex-shrink-0">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.gradient} flex flex-col items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105`}>
+                      <span className="text-[9px] font-bold text-white/70 tracking-widest uppercase leading-none mb-0.5">Step</span>
+                      <span className="text-xl font-black text-white leading-none">{i + 1}</span>
+                    </div>
+                  </div>
+
+                  {/* Content card */}
+                  <div className="flex-1 bg-white/[0.03] border border-white/[0.07] rounded-2xl px-6 py-5 hover:border-white/[0.13] hover:bg-white/[0.05] transition-all duration-300 min-w-0">
+                    <div className="flex items-start gap-3">
+                      {/* Icon */}
+                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md`}>
+                        {step.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">{step.label}</span>
+                        </div>
+                        <h3 className="font-bold text-white text-base mb-1.5">{step.title}</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
+                        {step.tip && (
+                          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-gray-400 text-xs">
+                            <svg className="w-3 h-3 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{step.tip}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{s.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+              ))}
+            </div>
+
+            {/* Result card */}
+            <div className="relative flex gap-5 mt-8 group">
+              {/* Terminal dot */}
+              <div className="relative z-10 flex-shrink-0 flex items-center justify-center w-14">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/15 border-2 border-emerald-500/50 flex items-center justify-center shadow-lg shadow-emerald-500/10 group-hover:border-emerald-400/70 transition-colors duration-300">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Result card content */}
+              <div className="flex-1 relative overflow-hidden rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/[0.07] to-blue-500/[0.04] p-6">
+                {/* Glow */}
+                <div className="absolute top-0 right-0 w-48 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative flex flex-col sm:flex-row sm:items-center gap-5">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-emerald-400 font-bold text-sm">Your shortlist is ready</span>
+                    </div>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      In just{" "}
+                      <span className="font-bold text-white bg-white/5 px-1.5 py-0.5 rounded">2–3 minutes</span>
+                      , your ranked list of up to{" "}
+                      <span className="font-bold text-white bg-white/5 px-1.5 py-0.5 rounded">50 candidates</span>
+                      {" "}is ready to review. Every profile comes with a match score, a fit band, and written AI reasoning — no black box.
+                    </p>
+                  </div>
+                  {/* Stats mini-block */}
+                  <div className="flex sm:flex-col gap-3 sm:gap-2 flex-shrink-0">
+                    <div className="text-center px-5 py-3 rounded-xl bg-white/[0.04] border border-white/[0.07]">
+                      <p className="text-2xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent leading-none">50</p>
+                      <p className="text-gray-500 text-[10px] font-medium mt-0.5">candidates</p>
+                    </div>
+                    <div className="text-center px-5 py-3 rounded-xl bg-white/[0.04] border border-white/[0.07]">
+                      <p className="text-2xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent leading-none">~3m</p>
+                      <p className="text-gray-500 text-[10px] font-medium mt-0.5">avg time</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Bottom CTA nudge */}
+          <div className="text-center mt-14">
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 px-7 py-3 text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-blue-500/40 transition-all hover:scale-[1.03]"
+            >
+              Try it free — no card needed
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </section>
 
